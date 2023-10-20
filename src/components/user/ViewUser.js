@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import MessageBox from "../layout/MessageBox";
-import EditUserModel from "./EditUser.js";
+// import EditUserModel from "./EditUser.js";
 import axiosInstance from "../../utils/axiosUtil";
 import { FaEdit } from "react-icons/fa";
 import Skeleton from "react-loading-skeleton";
@@ -17,7 +17,7 @@ const ViewUser = () => {
   const { token } = state;
   const { id } = useParams(); // user/:id
 
-  const [modalShow, setModalShow] = useState(false);
+  // const [modalShow, setModalShow] = useState(false);
   const [{ loading, error, user }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
@@ -28,10 +28,10 @@ const ViewUser = () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
 
-        const { data } = await axiosInstance.get(`/api/admin/getuser/${id}`, {
+        const res = await axiosInstance.get(`/api/admin/getuser/${id}`, {
           headers: { Authorization: token },
         });
-        dispatch({ type: "FETCH_SUCCESS", payload: data });
+        dispatch({ type: "FETCH_SUCCESS", payload: res.data });
       } catch (err) {
         dispatch({
           type: "FETCH_FAIL",
@@ -43,7 +43,7 @@ const ViewUser = () => {
       }
     };
     fetchData();
-  }, [id]);
+  }, [id, token]);
 
   const getDateTime = (dt) => {
     const dT = dt.split(".")[0].split("T");
@@ -65,12 +65,12 @@ const ViewUser = () => {
             <Card>
               <Card.Header>
                 <Card.Title>
-                  {loading ? <Skeleton /> : `${user?.name}`} Details
+                  {loading ? <Skeleton /> : `${user?.name}`} - Details
                 </Card.Title>
                 <div className="card-tools">
                   <FaEdit
                     style={{ color: "blue" }}
-                    onClick={() => setModalShow(true)}
+                    // onClick={() => setModalShow(true)}
                   />
                 </div>
               </Card.Header>
@@ -154,11 +154,11 @@ const ViewUser = () => {
               </Card.Body>
             </Card>
 
-            <EditUserModel
+            {/* <EditUserModel
               show={modalShow}
               onHide={() => setModalShow(false)}
             />
-            <ToastContainer />
+            <ToastContainer /> */}
           </>
         )}
       </Container>
