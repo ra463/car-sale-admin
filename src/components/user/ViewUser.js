@@ -65,7 +65,7 @@ const ViewUser = () => {
             <Card>
               <Card.Header>
                 <Card.Title>
-                  {loading ? <Skeleton /> : `${user.name}`} Details
+                  {loading ? <Skeleton /> : `${user?.name}`} Details
                 </Card.Title>
                 <div className="card-tools">
                   <FaEdit
@@ -80,31 +80,31 @@ const ViewUser = () => {
                     <p className="mb-0">
                       <strong>FullName</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : user.name}</p>
+                    <p>{loading ? <Skeleton /> : user?.name}</p>
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
                       <strong>Email</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : user.email}</p>
+                    <p>{loading ? <Skeleton /> : user?.email}</p>
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
                       <strong>Age</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : user.age}</p>
+                    <p>{loading ? <Skeleton /> : user?.age}</p>
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
                       <strong>Mobile No.</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : user.phoneNumber}</p>
+                    <p>{loading ? <Skeleton /> : user?.phoneNumber}</p>
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
                       <strong>Address</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : user.address}</p>
+                    <p>{loading ? <Skeleton /> : user?.address}</p>
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
@@ -112,10 +112,10 @@ const ViewUser = () => {
                     </p>
                     <p
                       style={{
-                        color: user.role === "admin" ? "green" : "red",
+                        color: user?.role === "admin" ? "green" : "red",
                       }}
                     >
-                      {loading ? <Skeleton /> : user.role}
+                      {loading ? <Skeleton /> : user?.role}
                     </p>
                   </Col>
                   <Col md={4}>
@@ -123,7 +123,7 @@ const ViewUser = () => {
                       <strong>Created At</strong>
                     </p>
                     <p>
-                      {loading ? <Skeleton /> : getDateTime(user.createdAt)}
+                      {loading ? <Skeleton /> : getDateTime(user?.createdAt)}
                     </p>
                   </Col>
                   <Col md={4}>
@@ -131,7 +131,7 @@ const ViewUser = () => {
                       <strong>Last Update</strong>
                     </p>
                     <p>
-                      {loading ? <Skeleton /> : getDateTime(user.updatedAt)}
+                      {loading ? <Skeleton /> : getDateTime(user?.updatedAt)}
                     </p>
                   </Col>
                 </Row>
@@ -145,7 +145,7 @@ const ViewUser = () => {
                     ) : (
                       <img
                         className="profile_pic"
-                        src={`${user.profilePicUrl}`}
+                        src={`${user?.profilePicUrl}`}
                         alt="img"
                       />
                     )}

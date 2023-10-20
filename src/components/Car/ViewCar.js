@@ -225,7 +225,7 @@ const ViewCar = () => {
                 }}
               >
                 <Card.Title>
-                  {loading ? <Skeleton /> : `${car.model}`} - Image(s)
+                  {loading ? <Skeleton /> : `${car?.model}`} - Image(s)
                 </Card.Title>
                 <Button>Add More Images</Button>
               </Card.Header>
@@ -256,7 +256,7 @@ const ViewCar = () => {
                 }}
               >
                 <Card.Title>
-                  {loading ? <Skeleton /> : `${car.model}`} - Description
+                  {loading ? <Skeleton /> : `${car?.model}`} - Description
                 </Card.Title>
                 <Button>Edit Description</Button>
               </Card.Header>
@@ -276,7 +276,7 @@ const ViewCar = () => {
                 }}
               >
                 <Card.Title>
-                  {loading ? <Skeleton /> : `${car.model}`} - Key Feature(s)
+                  {loading ? <Skeleton /> : `${car?.model}`} - Key Feature(s)
                 </Card.Title>
                 <Button>Edit Feature</Button>
               </Card.Header>
