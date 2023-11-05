@@ -3,7 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { Store } from "../../Store";
 import "./SideNavBar.css";
-import { RiDashboard2Fill } from "react-icons/ri";
+import { RiDashboard2Fill, RiHammerFill } from "react-icons/ri";
+import { BiDollar } from "react-icons/bi";
+import { GrTransaction } from "react-icons/gr";
 import { HiUsers } from "react-icons/hi";
 import { FaCarSide, FaSignOutAlt } from "react-icons/fa";
 
@@ -24,9 +26,19 @@ const linkList = [
     url: "/admin/cars",
   },
   {
-    icon: <FaCarSide className="icon-md" />,
+    icon: <RiHammerFill className="icon-md" />,
     text: "Auction",
     url: "/admin/auctions",
+  },
+  {
+    icon: <BiDollar className="icon-md" />,
+    text: "Bid",
+    url: "/admin/bids",
+  },
+  {
+    icon: <GrTransaction className="icon-md" />,
+    text: "Transactions",
+    url: "/admin/transactions",
   },
 ];
 
@@ -68,7 +80,9 @@ export default function SideNavbar({ isExpanded }) {
         >
           <div className="brand-link">
             {/* <img src={edwin_logo} alt="" width={"50px"} height="auto" /> */}
-            <span className="brand-text ms-2 font-weight-light">Car Auction</span>
+            <span className="brand-text ms-2 font-weight-light">
+              Car Auction
+            </span>
           </div>
 
           <div className="sidebar">

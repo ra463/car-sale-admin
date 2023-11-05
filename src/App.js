@@ -20,6 +20,9 @@ import Dashboard from "./components/layout/Dashboard";
 import UnprotectedRoute from "./components/protectedRoute/UnprotectedRoute";
 import Cars from "./components/Car/Car";
 import ViewCar from "./components/Car/ViewCar";
+import Auction from "./components/auction/Auction";
+import Bid from "./components/bid/Bids";
+import ViewAuction from "./components/auction/ViewAuction";
 
 function App() {
   const { state } = useContext(Store);
@@ -34,9 +37,12 @@ function App() {
     { path: "/admin/dashboard", element: <Dashboard /> },
     { path: "/view-profile", element: <ViewProfile /> },
     { path: "/admin/users", element: <Users /> },
+    { path: "/admin/auctions", element: <Auction /> },
+    { path: "/admin/bids", element: <Bid /> },
     { path: "/admin/view/user/:id", element: <ViewUser /> },
     { path: "/admin/cars", element: <Cars /> },
     { path: "/admin/view/car/:id", element: <ViewCar /> },
+    { path: "/admin/view/auction/:id", element: <ViewAuction /> },
   ];
 
   return (
