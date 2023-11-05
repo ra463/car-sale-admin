@@ -186,9 +186,9 @@ export default function Bid() {
                       </tr>
                     ))
                   ) : (
-                    <td>
-                      <b>No bids Found</b>
-                    </td>
+                    <tr>
+                      <td><b>No bids Found</b></td>
+                    </tr>
                   )}
                 </tbody>
               </Table>

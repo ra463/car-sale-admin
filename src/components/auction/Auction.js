@@ -108,12 +108,16 @@ export default function Auction() {
           <MessageBox variant="danger">{error}</MessageBox>
         ) : (
           <Card>
-            <Card.Header style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}>
-              <span>Total Auctions: <b>{filteredAuctionCount}</b></span>
+            <Card.Header
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <span>
+                Total Auctions: <b>{filteredAuctionCount}</b>
+              </span>
               <div className="search-box float-end">
                 <InputGroup>
                   <Form.Control
@@ -152,8 +156,7 @@ export default function Auction() {
                 <tbody>
                   {loading ? (
                     <CustomSkeleton resultPerPage={resultPerPage} column={8} />
-                  ) : (
-                    auctions &&
+                  ) : auctions && auctions.length > 0 ? (
                     auctions.map((auction, i) => (
                       <tr key={auction?._id} className="odd">
                         <td className="text-center">{skip + i + 1}</td>
@@ -209,6 +212,12 @@ export default function Auction() {
                         </td>
                       </tr>
                     ))
+                  ) : (
+                    <tr>
+                      <td>
+                        <b>No Auctions Found</b>
+                      </td>
+                    </tr>
                   )}
                 </tbody>
               </Table>
