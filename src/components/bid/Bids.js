@@ -112,9 +112,9 @@ export default function Bid() {
                 alignItems: "center",
               }}
             >
-                <span>
-                    Total Bids: <b>{filteredBidCount}</b>
-                </span>
+              <span>
+                Total Bids: <b>{filteredBidCount}</b>
+              </span>
               <div className="search-box float-end">
                 <InputGroup>
                   <Form.Control
@@ -187,7 +187,9 @@ export default function Bid() {
                     ))
                   ) : (
                     <tr>
-                      <td><b>No bids Found</b></td>
+                      <td>
+                        <b>No bids Found</b>
+                      </td>
                     </tr>
                   )}
                 </tbody>
