@@ -6,18 +6,18 @@ import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import MessageBox from "../layout/MessageBox";
-// import EditUserModel from "./EditUser.js";
 import axiosInstance from "../../utils/axiosUtil";
 import { FaEdit } from "react-icons/fa";
 import Skeleton from "react-loading-skeleton";
 import { motion } from "framer-motion";
+import EditUserModel from "./EditUser";
 
 const ViewUser = () => {
   const { state } = useContext(Store);
   const { token } = state;
-  const { id } = useParams(); // user/:id
+  const { id } = useParams();
 
-  // const [modalShow, setModalShow] = useState(false);
+  const [modalShow, setModalShow] = useState(false);
   const [{ loading, error, user }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
@@ -70,7 +70,7 @@ const ViewUser = () => {
                 <div className="card-tools">
                   <FaEdit
                     style={{ color: "blue" }}
-                    // onClick={() => setModalShow(true)}
+                    onClick={() => setModalShow(true)}
                   />
                 </div>
               </Card.Header>
@@ -154,11 +154,11 @@ const ViewUser = () => {
               </Card.Body>
             </Card>
 
-            {/* <EditUserModel
+            <EditUserModel
               show={modalShow}
               onHide={() => setModalShow(false)}
             />
-            <ToastContainer /> */}
+            <ToastContainer />
           </>
         )}
       </Container>

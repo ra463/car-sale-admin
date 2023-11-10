@@ -6,18 +6,18 @@ import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import MessageBox from "../layout/MessageBox";
-// import EditUserModel from "./EditUser.js";
 import axiosInstance from "../../utils/axiosUtil";
 import { FaEdit } from "react-icons/fa";
 import Skeleton from "react-loading-skeleton";
 import { motion } from "framer-motion";
+import EditCarModel from "./EditCar";
 
 const ViewCar = () => {
   const { state } = useContext(Store);
   const { token } = state;
-  const { id } = useParams(); // user/:id
+  const { id } = useParams();
 
-  //   const [modalShow, setModalShow] = useState(false);
+  const [modalShow, setModalShow] = useState(false);
   const [{ loading, error, car }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
@@ -43,7 +43,7 @@ const ViewCar = () => {
       }
     };
     fetchData();
-  }, [id]);
+  }, [id, token]);
 
   const getDateTime = (dt) => {
     const dT = dt.split(".")[0].split("T");
@@ -74,7 +74,7 @@ const ViewCar = () => {
                 <div className="card-tools">
                   <FaEdit
                     style={{ color: "blue" }}
-                    // onClick={() => setModalShow(true)}
+                    onClick={() => setModalShow(true)}
                   />
                 </div>
               </Card.Header>
@@ -248,17 +248,10 @@ const ViewCar = () => {
                 marginTop: "1rem",
               }}
             >
-              <Card.Header
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
+              <Card.Header>
                 <Card.Title>
                   {loading ? <Skeleton /> : `${car?.model}`} - Description
                 </Card.Title>
-                <Button>Edit Description</Button>
               </Card.Header>
               <Card.Body>{car?.description}</Card.Body>
             </Card>
@@ -283,14 +276,11 @@ const ViewCar = () => {
               <Card.Body>
                 {car?.key_highlights
                   ? car?.key_highlights
-                  : "No Key Features Found."}
+                  : <b>No Key Features Found</b>}
               </Card.Body>
             </Card>
 
-            {/* <EditUserModel
-              show={modalShow}
-              onHide={() => setModalShow(false)}
-            /> */}
+            <EditCarModel show={modalShow} onHide={() => setModalShow(false)} />
             <ToastContainer />
           </>
         )}

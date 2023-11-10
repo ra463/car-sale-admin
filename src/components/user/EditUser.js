@@ -2,55 +2,54 @@ import React, { useEffect, useReducer, useContext, useState } from "react";
 import { Store } from "../../Store";
 import { getError } from "../../utils/error";
 import { editReducer as reducer } from "../../reducers/commonReducer";
-import { uploadImage } from "../../utils/uploadImage";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { Modal, Form, Button, Container, ProgressBar } from "react-bootstrap";
+import { Modal, Form, Button, Container } from "react-bootstrap";
 import LoadingBox from "../layout/LoadingBox";
 import axiosInstance from "../../utils/axiosUtil";
 
 export default function EditUserModel(props) {
-  const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
   const { id } = useParams(); // user/:id
 
-  const [{ loading, error, loadingUpdate }, dispatch] = useReducer(reducer, {
+  const [{ error, loadingUpdate }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
   });
 
-  const [password, setPassword] = useState("");
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [mobile_no, setMobileNo] = useState("");
-  // const [fax, setFax] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [age, setAge] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [role, setRole] = useState("");
+  const [address, setAddress] = useState("");
 
   const resetForm = () => {
-    setFirstname("");
-    setLastname("");
-    setMobileNo("");
-    // setFax("");
+    setName("");
+    setEmail("");
+    setAge("");
+    setPhoneNumber("");
     setRole("");
+    setAddress("");
   };
   useEffect(() => {
     const fetchData = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
 
-        const { data } = await axiosInstance.get(`/api/admin/user/${id}`, {
+        const { data } = await axiosInstance.get(`/api/admin/getuser/${id}`, {
           headers: { Authorization: token },
         });
-        // console.log(data);
 
         const user = data.user;
-        // setPassword(user.password);
-        setFirstname(user.firstname);
-        setLastname(user.lastname);
-        setMobileNo(user.mobile_no);
-        // setFax(user.fax);
+
+        setName(user.name);
+        setEmail(user.email);
+        setAge(user.age);
+        setPhoneNumber(user.phoneNumber);
         setRole(user.role);
+        setAddress(user.address);
 
         dispatch({ type: "FETCH_SUCCESS" });
       } catch (err) {
@@ -64,7 +63,7 @@ export default function EditUserModel(props) {
       }
     };
     fetchData();
-  }, [id, props.show]);
+  }, [id, props.show, token, error]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -73,13 +72,14 @@ export default function EditUserModel(props) {
       dispatch({ type: "UPDATE_REQUEST" });
 
       const { data } = await axiosInstance.put(
-        `/api/admin/user/${id}`,
+        `/api/admin/updateuser/${id}`,
         {
-          firstname,
-          lastname,
-          mobile_no,
-          // fax,
+          name,
+          email,
           role,
+          age,
+          phoneNumber,
+          address,
         },
         {
           headers: {
@@ -88,25 +88,25 @@ export default function EditUserModel(props) {
         }
       );
 
-      // console.log("user update data", data);
-      if (data.user) {
-        toast.success("User Updated Succesfully.  Redirecting...", {
-          position: toast.POSITION.BOTTOM_CENTER,
+      if (data) {
+        dispatch({ type: "UPDATE_SUCCESS" });
+        toast.success("User Updated Succesfully", {
+          position: toast.POSITION.TOP_CENTER,
         });
         resetForm();
+        props.onHide();
         setTimeout(() => {
-          navigate("/admin/users");
-          dispatch({ type: "UPDATE_SUCCESS" });
+          window.location.reload();
         }, 3000);
       } else {
         toast.error(data.error.message, {
-          position: toast.POSITION.BOTTOM_CENTER,
+          position: toast.POSITION.TOP_CENTER,
         });
       }
     } catch (err) {
       dispatch({ type: "UPDATE_FAIL" });
       toast.error(getError(err), {
-        position: toast.POSITION.BOTTOM_CENTER,
+        position: toast.POSITION.TOP_CENTER,
       });
     }
   };
@@ -124,50 +124,54 @@ export default function EditUserModel(props) {
       <Form onSubmit={submitHandler}>
         <Modal.Body>
           <Container className="small-container">
-            {/* <Form.Group className="mb-3" controlId="name">
-              <Form.Label>Password</Form.Label>
+            <Form.Group className="mb-3" controlId="name">
+              <Form.Label>Name</Form.Label>
               <Form.Control
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </Form.Group> */}
-
-            <Form.Group className="mb-3" controlId="firstname">
-              <Form.Label>Firstname</Form.Label>
-              <Form.Control
-                value={firstname}
-                onChange={(e) => setFirstname(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                type="text"
                 required
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="lastname">
-              <Form.Label>Lastname</Form.Label>
+            <Form.Group className="mb-3" controlId="email">
+              <Form.Label>Email</Form.Label>
               <Form.Control
-                value={lastname}
-                onChange={(e) => setLastname(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                type="email"
                 required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="age">
+              <Form.Label>Age</Form.Label>
+              <Form.Control
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                required
+                type="number"
               />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="mobile_no">
               <Form.Label>Mobile No.</Form.Label>
               <Form.Control
-                value={mobile_no}
-                onChange={(e) => setMobileNo(e.target.value)}
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
                 required
+                type="number"
               />
             </Form.Group>
 
-            {/* <Form.Group className="mb-3" controlId="fax">
-              <Form.Label>Fax</Form.Label>
+            <Form.Group className="mb-3" controlId="address">
+              <Form.Label>Address</Form.Label>
               <Form.Control
-                value={fax}
-                onChange={(e) => setFax(e.target.value)}
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
                 required
               />
-            </Form.Group> */}
+            </Form.Group>
 
             <Form.Group className="mb-3" controlId="role">
               <Form.Label>Role</Form.Label>

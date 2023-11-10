@@ -14,7 +14,7 @@ import {
 } from "react-bootstrap";
 import CustomPagination from "../layout/CustomPagination";
 import axiosInstance from "../../utils/axiosUtil";
-import { FaExternalLinkAlt, FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
+import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
 import CustomSkeleton from "../layout/CustomSkeleton";
 
@@ -26,7 +26,6 @@ export default function Auction() {
   const [curPage, setCurPage] = useState(1);
   const [resultPerPage, setResultPerPage] = useState(10);
   const [searchInput, setSearchInput] = useState("");
-  // const [role, setRole] = useState("All");
   const [query, setQuery] = useState("");
   const [del, setDel] = useState(false);
 
@@ -38,7 +37,6 @@ export default function Auction() {
       error: "",
     });
 
-  console.log(auctions);
   const deleteUser = async (id) => {
     if (
       window.confirm(
@@ -47,13 +45,13 @@ export default function Auction() {
     ) {
       try {
         setDel(true);
-        const res = await axiosInstance.delete(
-          `/api/admin/deleteauction/${id}`,
-          {
-            headers: { Authorization: token },
-          }
-        );
+        await axiosInstance.delete(`/api/admin/deleteauction/${id}`, {
+          headers: { Authorization: token },
+        });
         setDel(false);
+        toast.success("Auction Deleted Successfully", {
+          position: toast.POSITION.BOTTOM_CENTER,
+        });
       } catch (error) {
         toast.error(error.response.data.message, {
           position: toast.POSITION.BOTTOM_CENTER,
@@ -144,8 +142,8 @@ export default function Auction() {
                 <thead>
                   <tr>
                     <th>S.No</th>
+                    <th>AuctionId</th>
                     <th>CarId</th>
-                    <th>SellerId</th>
                     <th>Auction Start</th>
                     <th>Auction End</th>
                     <th>Highest Bid</th>
@@ -160,16 +158,16 @@ export default function Auction() {
                     auctions.map((auction, i) => (
                       <tr key={auction?._id} className="odd">
                         <td className="text-center">{skip + i + 1}</td>
+                        <td>{auction?._id}</td>
                         <td>
                           <Link to={`/admin/view/car/${auction?.car}`}>
                             {auction?.car}
                           </Link>
                         </td>
-                        <td>{auction?.seller}</td>
                         <td>{getDateTime(auction?.auction_start)}</td>
                         <td>{getDateTime(auction?.auction_end)}</td>
                         {auction?.highest_bid ? (
-                          <td>{auction?.highest_bid?.bid_amount}</td>
+                          <td>${auction?.highest_bid?.bid_amount}</td>
                         ) : (
                           <td>
                             <b>No bid</b>

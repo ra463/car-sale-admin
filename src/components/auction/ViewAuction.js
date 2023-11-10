@@ -4,9 +4,8 @@ import { getError } from "../../utils/error";
 import { viewAuctionReducer as reducer } from "../../reducers/auction";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { Card, Col, Container, Row } from "react-bootstrap";
 import MessageBox from "../layout/MessageBox";
-// import EditUserModel from "./EditUser.js";
 import axiosInstance from "../../utils/axiosUtil";
 import { FaEdit } from "react-icons/fa";
 import Skeleton from "react-loading-skeleton";
@@ -17,7 +16,6 @@ const ViewAuction = () => {
   const { token } = state;
   const { id } = useParams();
 
-  //   const [modalShow, setModalShow] = useState(false);
   const [{ loading, error, auction }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
@@ -46,11 +44,11 @@ const ViewAuction = () => {
       }
     };
     fetchData();
-  }, [id]);
+  }, [id, token]);
 
-  const getDateTime = (dt) => {
+  const getTime = (dt) => {
     const dT = dt.split(".")[0].split("T");
-    return `${dT[0]} ${dT[1]}`;
+    return dT[1];
   };
   const getDate = (dt) => {
     const dT = dt.split(".")[0].split("T");
@@ -93,7 +91,9 @@ const ViewAuction = () => {
                     <p className="mb-0">
                       <strong>Auction Start Date</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : auction?.auction_start}</p>
+                    <p>
+                      {loading ? <Skeleton /> : getDate(auction?.auction_start)}
+                    </p>
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
@@ -105,16 +105,32 @@ const ViewAuction = () => {
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
+                      <strong>Auction Start Time</strong>
+                    </p>
+                    <p>
+                      {loading ? <Skeleton /> : getTime(auction?.auction_start)}
+                    </p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Auction End Time</strong>
+                    </p>
+                    <p>
+                      {loading ? <Skeleton /> : getTime(auction?.auction_end)}
+                    </p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
                       <strong>Auction Status</strong>
                     </p>
                     <p>{loading ? <Skeleton /> : auction?.status}</p>
                   </Col>
-                  {/* <Col md={4}>
+                  <Col md={4}>
                     <p className="mb-0">
                       <strong>Manufacturing Year</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : car?.manufacture_year}</p>
-                  </Col> */}
+                    <p>{loading ? <Skeleton /> : auction?.manufacture_year}</p>
+                  </Col>
                   {/* <Col md={4}>
                     <p className="mb-0">
                       <strong>VIN</strong>

@@ -48,6 +48,7 @@ const active_text = {
   User: "user",
   Car: "car",
   Auction: "auction",
+  Bid: "bid",
 };
 
 export default function SideNavbar({ isExpanded }) {

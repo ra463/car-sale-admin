@@ -26,7 +26,6 @@ export default function Cars() {
   const [curPage, setCurPage] = useState(1);
   const [resultPerPage, setResultPerPage] = useState(10);
   const [searchInput, setSearchInput] = useState("");
-  const [role, setRole] = useState("All");
   const [query, setQuery] = useState("");
   const [del, setDel] = useState(false);
 
@@ -43,18 +42,21 @@ export default function Cars() {
   const deleteUser = async (id) => {
     if (
       window.confirm(
-        "Are you sure you want to delete this user?\n\nNote: All Related orders, addresses, coupons, cart and reviews will also be deleted."
+        "Are you sure you want to delete this Car?\n\nNote: All Related auctions will also be deleted."
       ) === true
     ) {
       try {
         setDel(true);
-        const res = await axiosInstance.delete(`/api/admin/user/${id}`, {
+        await axiosInstance.delete(`/api/admin/deletecar/${id}`, {
           headers: { Authorization: token },
         });
         setDel(false);
+        toast.success("Car Deleted Successfully", {
+          position: toast.POSITION.TOP_CENTER,
+        });
       } catch (error) {
         toast.error(error.response.data.message, {
-          position: toast.POSITION.BOTTOM_CENTER,
+          position: toast.POSITION.TOP_CENTER,
         });
       }
     }
@@ -104,25 +106,16 @@ export default function Cars() {
           <MessageBox variant="danger">{error}</MessageBox>
         ) : (
           <Card>
-            <Card.Header>
-              <div className="float-start d-flex align-items-center">
-                <p className="p-bold m-0 me-3">Filter by Role</p>
-                <Form.Group controlId="status">
-                  <Form.Select
-                    value={role}
-                    onChange={(e) => {
-                      setRole(e.target.value);
-                      setCurPage(1);
-                    }}
-                    aria-label="Default select example"
-                  >
-                    <option value="All">All</option>
-                    <option value="admin">Admin</option>
-                    <option value="seller">Seller</option>
-                    <option value="buyer">Buyer</option>
-                  </Form.Select>
-                </Form.Group>
-              </div>
+            <Card.Header
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <span>
+                Total Cars: <b>{filteredCarCount}</b>
+              </span>
               <div className="search-box float-end">
                 <InputGroup>
                   <Form.Control
@@ -160,9 +153,8 @@ export default function Cars() {
                 </thead>
                 <tbody>
                   {loading ? (
-                    <CustomSkeleton resultPerPage={resultPerPage} column={9} />
-                  ) : (
-                    cars &&
+                    <CustomSkeleton resultPerPage={resultPerPage} column={8} />
+                  ) : cars && cars.length > 0 ? (
                     cars.map((car, i) => (
                       <tr key={car?._id} className="odd">
                         <td className="text-center">{skip + i + 1}</td>
@@ -200,6 +192,12 @@ export default function Cars() {
                         </td>
                       </tr>
                     ))
+                  ) : (
+                    <tr>
+                      <td colSpan="8" className="text-center">
+                        No Car(s) Found
+                      </td>
+                    </tr>
                   )}
                 </tbody>
               </Table>

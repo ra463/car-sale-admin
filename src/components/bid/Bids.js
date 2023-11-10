@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import { Store } from "../../Store";
 import { bidReducer } from "../../reducers/bid";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
 import {
@@ -14,19 +14,17 @@ import {
 } from "react-bootstrap";
 import CustomPagination from "../layout/CustomPagination";
 import axiosInstance from "../../utils/axiosUtil";
-import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
+import { FaSearch, FaTrashAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
 import CustomSkeleton from "../layout/CustomSkeleton";
 
 export default function Bid() {
-  const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
 
   const [curPage, setCurPage] = useState(1);
   const [resultPerPage, setResultPerPage] = useState(10);
   const [searchInput, setSearchInput] = useState("");
-  // const [role, setRole] = useState("All");
   const [query, setQuery] = useState("");
   const [del, setDel] = useState(false);
 
@@ -40,7 +38,7 @@ export default function Bid() {
     }
   );
 
-  const deleteUser = async (id) => {
+  const deleteBid = async (id) => {
     if (
       window.confirm(
         "Are you sure you want to delete this bid?\n\nNote: It will also be deleted from the auction."
@@ -48,10 +46,13 @@ export default function Bid() {
     ) {
       try {
         setDel(true);
-        const res = await axiosInstance.delete(`/api/admin/deletebid/${id}`, {
+        await axiosInstance.delete(`/api/admin/deletebid/${id}`, {
           headers: { Authorization: token },
         });
         setDel(false);
+        toast.success("Bid deleted successfully", {
+          position: toast.POSITION.BOTTOM_CENTER,
+        });
       } catch (error) {
         toast.error(error.response.data.message, {
           position: toast.POSITION.BOTTOM_CENTER,
@@ -106,7 +107,7 @@ export default function Bid() {
         ) : (
           <Card>
             <Card.Header
-              tyle={{
+              style={{
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
@@ -155,7 +156,11 @@ export default function Bid() {
                     bids.map((bid, i) => (
                       <tr key={bid?._id} className="odd">
                         <td className="text-center">{skip + i + 1}</td>
-                        <td>{bid?.bidder?._id}</td>
+                        <td>
+                          <Link to={`/admin/view/user/${bid?.bidder._id}`}>
+                            {bid?.bidder._id}
+                          </Link>
+                        </td>
                         <td>
                           <Link to={`/api/admin/view/auction/${bid?.auction}`}>
                             {bid?.auction}
@@ -164,18 +169,9 @@ export default function Bid() {
                         <td>{bid?.bid_amount}</td>
                         <td>{getDateTime(bid?.createdAt)}</td>
                         <td>
-                          {/* <Button
-                            onClick={() => {
-                              navigate(`/admin/view/auction/${bid._id}`);
-                            }}
-                            type="success"
-                            className="btn btn-primary"
-                          >
-                            <FaEye />
-                          </Button> */}
                           <Button
                             onClick={() => {
-                              deleteUser(bid._id);
+                              deleteBid(bid._id);
                             }}
                             type="danger"
                             className="btn btn-danger ms-2"

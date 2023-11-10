@@ -26,7 +26,6 @@ export default function Users() {
   const [curPage, setCurPage] = useState(1);
   const [resultPerPage, setResultPerPage] = useState(10);
   const [searchInput, setSearchInput] = useState("");
-  // const [role, setRole] = useState("all");
   const [query, setQuery] = useState("");
   const [del, setDel] = useState(false);
 
@@ -43,15 +42,18 @@ export default function Users() {
   const deleteUser = async (id) => {
     if (
       window.confirm(
-        "Are you sure you want to delete this user?\n\nNote: All Related orders, addresses, coupons, cart and reviews will also be deleted."
+        "Are you sure you want to delete this user?\n\nNote: All Related car's, auction's and bids will also be deleted."
       ) === true
     ) {
       try {
         setDel(true);
-        const res = await axiosInstance.delete(`/api/admin/user/${id}`, {
+        await axiosInstance.delete(`/api/admin/deleteuser/${id}`, {
           headers: { Authorization: token },
         });
         setDel(false);
+        toast.success("User Deleted Successfully", {
+          position: toast.POSITION.BOTTOM_CENTER,
+        });
       } catch (error) {
         toast.error(error.response.data.message, {
           position: toast.POSITION.BOTTOM_CENTER,
@@ -104,16 +106,20 @@ export default function Users() {
           <MessageBox variant="danger">{error}</MessageBox>
         ) : (
           <Card>
-            <Card.Header>
-              <div className="float-start d-flex align-items-center">
+            <Card.Header style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}>
+              {/* <div className="float-start d-flex align-items-center">
                 <p className="p-bold m-0 me-3">Filter by Role</p>
                 <Form.Group controlId="status">
                   <Form.Select
-                    // value={role}
-                    // onChange={(e) => {
-                    //   setRole(e.target.value);
-                    //   setCurPage(1);
-                    // }}
+                    value={role}
+                    onChange={(e) => {
+                      setRole(e.target.value);
+                      setCurPage(1);
+                    }}
                     aria-label="Default select example"
                   >
                     <option value="all">All</option>
@@ -121,7 +127,10 @@ export default function Users() {
                     <option value="intermediary">Buyer</option>
                   </Form.Select>
                 </Form.Group>
-              </div>
+              </div> */}
+               <span>
+                Total Users: <b>{filteredUserCount}</b>
+              </span>
               <div className="search-box float-end">
                 <InputGroup>
                   <Form.Control
@@ -159,9 +168,8 @@ export default function Users() {
                 </thead>
                 <tbody>
                   {loading ? (
-                    <CustomSkeleton resultPerPage={resultPerPage} column={9} />
-                  ) : (
-                    users &&
+                    <CustomSkeleton resultPerPage={resultPerPage} column={8} />
+                  ) : users && users.length > 0 ? (
                     users.map((user, i) => (
                       <tr key={user?._id} className="odd">
                         <td className="text-center">{skip + i + 1}</td>
@@ -172,7 +180,17 @@ export default function Users() {
                           {getDateTime(user?.createdAt && user?.createdAt)}
                         </td>
                         <td>{user?.phoneNumber}</td>
-                        <td>{user?.role}</td>
+                        <td>
+                          {user?.role === "user" ? (
+                            <span className="badge bg-success">
+                              {user?.role}
+                            </span>
+                          ) : (
+                            <span className="badge bg-primary">
+                              {user?.role}
+                            </span>
+                          )}
+                        </td>
                         <td>
                           <Button
                             onClick={() => {
@@ -195,6 +213,12 @@ export default function Users() {
                         </td>
                       </tr>
                     ))
+                  ) : (
+                    <tr>
+                      <td colSpan="8" className="text-center">
+                        No User(s) Found
+                      </td>
+                    </tr>
                   )}
                 </tbody>
               </Table>
