@@ -8,14 +8,16 @@ import { Modal, Form, Button, Container, Spinner } from "react-bootstrap";
 
 export default function UpdateProfileModel(props) {
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { token } = state;
+  const { token, userInfo } = state;
+  
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
+  const [address, setAddress] = useState("");
+  const [age, setAge] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [mobile_no, setMobileNo] = useState("");
-  // const [fax, setFax] = useState("");
-
-  const [{ loading, error, loadingUpdate }, dispatch] = useReducer(reducer, {
+  const [{ error, loadingUpdate }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
   });
@@ -25,16 +27,18 @@ export default function UpdateProfileModel(props) {
       try {
         dispatch({ type: "FETCH_REQUEST" });
 
-        const { data } = await axiosInstance.get("/api/user/user-profile", {
+        const { data } = await axiosInstance.get("/api/user/myprofile", {
           headers: { Authorization: token },
         });
 
         const user = data.user;
 
-        setFirstname(user.firstname);
-        setLastname(user.lastname);
-        // setFax(user.fax);
-        setMobileNo(user.mobile_no);
+        setName(user.name);
+        setEmail(user.email);
+        setPhoneNumber(user.phoneNumber);
+        setRole(user.role);
+        setAddress(user.address);
+        setAge(user.age);
 
         dispatch({ type: "FETCH_SUCCESS" });
       } catch (err) {
@@ -48,28 +52,29 @@ export default function UpdateProfileModel(props) {
       }
     };
     fetchData();
-  }, [token, props.show]);
+  }, [token, props.show, error]);
 
   const resetForm = () => {
-    setFirstname("");
-    setLastname("");
-    setMobileNo("");
-    // setFax("");
+    setName("");
+    setEmail("");
+    setPhoneNumber("");
   };
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    // // console.log("ok");
+
     try {
       dispatch({ type: "UPDATE_REQUEST" });
 
       const { data } = await axiosInstance.put(
-        "/api/user/update-profile",
+        `/api/admin/updateuser/${userInfo._id}`,
         {
-          firstname,
-          lastname,
-          // fax,
-          mobile_no,
+          name,
+          email,
+          role,
+          age,
+          phoneNumber,
+          address,
         },
         {
           headers: {
@@ -77,8 +82,7 @@ export default function UpdateProfileModel(props) {
           },
         }
       );
-      // // console.log("data", data);
-      if (data.user) {
+      if (data) {
         toast.success("User Updated Successfully.", {
           position: toast.POSITION.BOTTOM_CENTER,
         });
@@ -95,9 +99,9 @@ export default function UpdateProfileModel(props) {
           position: toast.POSITION.BOTTOM_CENTER,
         });
       }
-    } catch (err) {
+    } catch (error) {
       dispatch({ type: "UPDATE_FAIL" });
-      toast.error(getError(err), {
+      toast.error(getError(error), {
         position: toast.POSITION.BOTTOM_CENTER,
       });
     }
@@ -119,40 +123,27 @@ export default function UpdateProfileModel(props) {
             className="small-container"
             style={{ backgroundColor: "#f4f6f9" }}
           >
-            {/* <img
-            src={preview}
-            alt={"profile_img"}
-            style={{ width: "200px", height: "200px" }}
-          /> */}
             <Form.Group className="mb-3" controlId="firstname">
-              <Form.Label>Firstname</Form.Label>
+              <Form.Label>Full Name</Form.Label>
               <Form.Control
-                value={firstname}
-                onChange={(e) => setFirstname(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 required
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="lastname">
-              <Form.Label>Lastname</Form.Label>
+              <Form.Label>Email</Form.Label>
               <Form.Control
-                value={lastname}
-                onChange={(e) => setLastname(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </Form.Group>
-            {/* <Form.Group className="mb-3" controlId="fax">
-              <Form.Label>Fax</Form.Label>
-              <Form.Control
-                value={fax}
-                onChange={(e) => setFax(e.target.value)}
-                required
-              />
-            </Form.Group> */}
             <Form.Group className="mb-3" controlId="mobile_no">
               <Form.Label>Mobile No.</Form.Label>
               <Form.Control
-                value={mobile_no}
-                onChange={(e) => setMobileNo(e.target.value)}
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
                 required
               />
             </Form.Group>

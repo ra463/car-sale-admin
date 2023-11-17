@@ -25,18 +25,18 @@ const ViewProfile = () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
 
-        const { data } = await axiosInstance.get(`/api/user/user-profile`, {
+        const { data } = await axiosInstance.get(`/api/user/myprofile`, {
           headers: { Authorization: token },
         });
-        // console.log(data);
+        console.log(data);
 
         dispatch({ type: "FETCH_SUCCESS", payload: data });
-      } catch (err) {
+      } catch (error) {
         dispatch({
           type: "FETCH_FAIL",
-          payload: getError(err),
+          payload: getError(error),
         });
-        toast.error(getError(err), {
+        toast.error(getError(error), {
           position: toast.POSITION.BOTTOM_CENTER,
         });
       }
@@ -59,7 +59,7 @@ const ViewProfile = () => {
         <>
           <Card>
             <Card.Header>
-              <Card.Title>{`${user.firstname} ${user.lastname}`}</Card.Title>
+              <Card.Title>{user.name} - Admin</Card.Title>
               <div className="card-tools">
                 <FaEdit
                   style={{ color: "blue" }}
@@ -71,15 +71,9 @@ const ViewProfile = () => {
               <Row>
                 <Col md={4}>
                   <p className="mb-0">
-                    <strong>Firstname</strong>
+                    <strong>Full Name</strong>
                   </p>
-                  <p>{user.firstname}</p>
-                </Col>
-                <Col md={4}>
-                  <p className="mb-0">
-                    <strong>Lastname</strong>
-                  </p>
-                  <p>{user.lastname}</p>
+                  <p>{user.name}</p>
                 </Col>
                 <Col md={4}>
                   <p className="mb-0">
@@ -91,19 +85,15 @@ const ViewProfile = () => {
                   <p className="mb-0">
                     <strong>Mobile No.</strong>
                   </p>
-                  <p>{user.mobile_no}</p>
+                  <p>{user.phoneNumber}</p>
                 </Col>
-                {/* <Col md={4}>
-                  <p className="mb-0">
-                    <strong>Fax</strong>
-                  </p>
-                  <p>{user.fax}</p>
-                </Col> */}
                 <Col md={4}>
                   <p className="mb-0">
                     <strong>Role</strong>
                   </p>
-                  <p>{user.role}</p>
+                  <p>
+                    <span className="badge bg-success">{user?.role}</span>
+                  </p>
                 </Col>
                 <Col md={4}>
                   <p className="mb-0">

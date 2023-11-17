@@ -37,6 +37,8 @@ export default function Auction() {
       error: "",
     });
 
+    console.log(auctions);
+
   const deleteUser = async (id) => {
     if (
       window.confirm(
@@ -143,7 +145,7 @@ export default function Auction() {
                   <tr>
                     <th>S.No</th>
                     <th>AuctionId</th>
-                    <th>CarId</th>
+                    <th>Seller</th>
                     <th>Auction Start</th>
                     <th>Auction End</th>
                     <th>Highest Bid</th>
@@ -159,11 +161,7 @@ export default function Auction() {
                       <tr key={auction?._id} className="odd">
                         <td className="text-center">{skip + i + 1}</td>
                         <td>{auction?._id}</td>
-                        <td>
-                          <Link to={`/admin/view/car/${auction?.car}`}>
-                            {auction?.car}
-                          </Link>
-                        </td>
+                        <td>{auction?.seller?.name}</td>
                         <td>{getDateTime(auction?.auction_start)}</td>
                         <td>{getDateTime(auction?.auction_end)}</td>
                         {auction?.highest_bid ? (

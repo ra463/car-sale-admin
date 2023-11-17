@@ -55,7 +55,7 @@ export default function Users() {
           position: toast.POSITION.BOTTOM_CENTER,
         });
       } catch (error) {
-        toast.error(error.response.data.message, {
+        toast.error(error.response, {
           position: toast.POSITION.BOTTOM_CENTER,
         });
       }
@@ -106,11 +106,13 @@ export default function Users() {
           <MessageBox variant="danger">{error}</MessageBox>
         ) : (
           <Card>
-            <Card.Header style={{
+            <Card.Header
+              style={{
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-              }}>
+              }}
+            >
               {/* <div className="float-start d-flex align-items-center">
                 <p className="p-bold m-0 me-3">Filter by Role</p>
                 <Form.Group controlId="status">
@@ -128,7 +130,7 @@ export default function Users() {
                   </Form.Select>
                 </Form.Group>
               </div> */}
-               <span>
+              <span>
                 Total Users: <b>{filteredUserCount}</b>
               </span>
               <div className="search-box float-end">

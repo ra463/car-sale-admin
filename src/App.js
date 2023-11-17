@@ -23,6 +23,10 @@ import ViewCar from "./components/Car/ViewCar";
 import Auction from "./components/auction/Auction";
 import Bid from "./components/bid/Bids";
 import ViewAuction from "./components/auction/ViewAuction";
+import Transaction from "./components/transaction/Transaction";
+import ViewTransaction from "./components/transaction/ViewTransaction";
+import Query from "./components/query/Query";
+import ViewQuery from "./components/query/ViewQuery";
 
 function App() {
   const { state } = useContext(Store);
@@ -38,11 +42,15 @@ function App() {
     { path: "/view-profile", element: <ViewProfile /> },
     { path: "/admin/users", element: <Users /> },
     { path: "/admin/auctions", element: <Auction /> },
+    { path: "/admin/transactions", element: <Transaction /> },
     { path: "/admin/bids", element: <Bid /> },
+    { path: "/admin/queries", element: <Query /> },
     { path: "/admin/view/user/:id", element: <ViewUser /> },
     { path: "/admin/cars", element: <Cars /> },
     { path: "/admin/view/car/:id", element: <ViewCar /> },
     { path: "/admin/view/auction/:id", element: <ViewAuction /> },
+    { path: "/admin/view/transaction/:id", element: <ViewTransaction /> },
+    { path: "/admin/view/query/:id", element: <ViewQuery /> },
   ];
 
   return (

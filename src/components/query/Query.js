@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import { Store } from "../../Store";
-import { bidReducer } from "../../reducers/bid";
-import { Link } from "react-router-dom";
+import { getQueryReducer } from "../../reducers/query";
+import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
 import {
@@ -14,11 +14,12 @@ import {
 } from "react-bootstrap";
 import CustomPagination from "../layout/CustomPagination";
 import axiosInstance from "../../utils/axiosUtil";
-import { FaSearch, FaTrashAlt } from "react-icons/fa";
+import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
 import CustomSkeleton from "../layout/CustomSkeleton";
 
-export default function Bid() {
+export default function Query() {
+  const navigate = useNavigate();
   const { state } = useContext(Store);
   const { token } = state;
 
@@ -30,27 +31,25 @@ export default function Bid() {
 
   const curPageHandler = (p) => setCurPage(p);
 
-  const [{ loading, error, bids, filteredBidCount }, dispatch] = useReducer(
-    bidReducer,
-    {
+  const [{ loading, error, queries, filteredQueriesCount }, dispatch] =
+    useReducer(getQueryReducer, {
       loading: true,
       error: "",
-    }
-  );
+    });
 
-  const deleteBid = async (id) => {
+  const deleteQuery = async (id) => {
     if (
       window.confirm(
-        "Are you sure you want to delete this bid?\n\nNote: It will also be deleted from the auction."
+        "Are you sure you want to delete this Query? This action cannot be undone."
       ) === true
     ) {
       try {
         setDel(true);
-        await axiosInstance.delete(`/api/admin/deletebid/${id}`, {
+        await axiosInstance.delete(`/api/admin/delete-query/${id}`, {
           headers: { Authorization: token },
         });
         setDel(false);
-        toast.success("Bid deleted successfully", {
+        toast.success("Query Deleted Successfully", {
           position: toast.POSITION.BOTTOM_CENTER,
         });
       } catch (error) {
@@ -66,12 +65,11 @@ export default function Bid() {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const res = await axiosInstance.get(
-          `/api/admin/getallbids/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+          `/api/admin/get-all-queries/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
           {
             headers: { Authorization: token },
           }
         );
-
         dispatch({ type: "FETCH_SUCCESS", payload: res.data });
       } catch (error) {
         dispatch({
@@ -86,7 +84,7 @@ export default function Bid() {
     fetchData();
   }, [token, del, curPage, resultPerPage, query]);
 
-  const numOfPages = Math.ceil(filteredBidCount / resultPerPage);
+  const numOfPages = Math.ceil(filteredQueriesCount / resultPerPage);
   const skip = resultPerPage * (curPage - 1);
 
   const getDateTime = (dt) => {
@@ -114,7 +112,7 @@ export default function Bid() {
               }}
             >
               <span>
-                Total Bids: <b>{filteredBidCount}</b>
+                Total Queries: <b>{filteredQueriesCount}</b>
               </span>
               <div className="search-box float-end">
                 <InputGroup>
@@ -142,36 +140,39 @@ export default function Bid() {
                 <thead>
                   <tr>
                     <th>S.No</th>
-                    <th>Bidded By</th>
-                    <th>AuctionId</th>
-                    <th>Bid Amount</th>
-                    <th>Bidded At</th>
+                    <th>FullName</th>
+                    <th>Email</th>
+                    <th>Mobile No.</th>
+                    <th>Registered On</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {loading ? (
                     <CustomSkeleton resultPerPage={resultPerPage} column={6} />
-                  ) : bids && bids.length > 0 ? (
-                    bids.map((bid, i) => (
-                      <tr key={bid?._id} className="odd">
+                  ) : queries && queries.length > 0 ? (
+                    queries.map((query, i) => (
+                      <tr key={query?._id} className="odd">
                         <td className="text-center">{skip + i + 1}</td>
+                        <td>{query?.name}</td>
+                        <td>{query?.email}</td>
+                        <td>{query?.phone}</td>
                         <td>
-                          <Link to={`/admin/view/user/${bid?.bidder._id}`}>
-                            {bid?.bidder.name}
-                          </Link>
+                          {getDateTime(query?.createdAt && query?.createdAt)}
                         </td>
-                        <td>
-                          <Link to={`/api/admin/view/auction/${bid?.auction}`}>
-                            {bid?.auction}
-                          </Link>
-                        </td>
-                        <td>{bid?.bid_amount}</td>
-                        <td>{getDateTime(bid?.createdAt)}</td>
                         <td>
                           <Button
                             onClick={() => {
-                              deleteBid(bid._id);
+                              navigate(`/admin/view/query/${query._id}`);
+                            }}
+                            type="success"
+                            className="btn btn-primary"
+                          >
+                            <FaEye />
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              deleteQuery(query._id);
                             }}
                             type="danger"
                             className="btn btn-danger ms-2"
@@ -183,8 +184,8 @@ export default function Bid() {
                     ))
                   ) : (
                     <tr>
-                      <td>
-                        <b>No bids Found</b>
+                      <td colSpan="8" className="text-center">
+                        No Querie(s) Found
                       </td>
                     </tr>
                   )}
@@ -209,7 +210,7 @@ export default function Bid() {
                   </Form.Select>
                 </Form.Group>
               </div>
-              {resultPerPage < filteredBidCount && (
+              {resultPerPage < filteredQueriesCount && (
                 <CustomPagination
                   pages={numOfPages}
                   pageHandler={curPageHandler}

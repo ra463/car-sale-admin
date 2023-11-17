@@ -7,7 +7,7 @@ import { RiDashboard2Fill, RiHammerFill } from "react-icons/ri";
 import { BiDollar } from "react-icons/bi";
 import { GrTransaction } from "react-icons/gr";
 import { HiUsers } from "react-icons/hi";
-import { FaCarSide, FaSignOutAlt } from "react-icons/fa";
+import { FaCarSide, FaSignOutAlt, FaRegStar } from "react-icons/fa";
 
 const linkList = [
   {
@@ -37,8 +37,13 @@ const linkList = [
   },
   {
     icon: <GrTransaction className="icon-md" />,
-    text: "Transactions",
+    text: "Transaction",
     url: "/admin/transactions",
+  },
+  {
+    icon: <FaRegStar className="icon-md" />,
+    text: "Queries",
+    url: "/admin/queries",
   },
 ];
 
@@ -48,7 +53,9 @@ const active_text = {
   User: "user",
   Car: "car",
   Auction: "auction",
+  Transaction: "transaction",
   Bid: "bid",
+  Queries: "queries",
 };
 
 export default function SideNavbar({ isExpanded }) {

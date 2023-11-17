@@ -4,7 +4,7 @@ import { getError } from "../../utils/error";
 import { viewAuctionReducer as reducer } from "../../reducers/auction";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { Card, Col, Container, Row } from "react-bootstrap";
+import { Card, Col, Container, Row, Table } from "react-bootstrap";
 import MessageBox from "../layout/MessageBox";
 import axiosInstance from "../../utils/axiosUtil";
 import { FaEdit } from "react-icons/fa";
@@ -16,10 +16,13 @@ const ViewAuction = () => {
   const { token } = state;
   const { id } = useParams();
 
-  const [{ loading, error, auction }, dispatch] = useReducer(reducer, {
+  const [{ loading, error, auction, bids }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
   });
+
+  console.log(auction);
+  console.log(bids);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,14 +73,8 @@ const ViewAuction = () => {
             <Card>
               <Card.Header>
                 <Card.Title>
-                  {loading ? <Skeleton /> : `#${auction?._id}`} - Details
+                  {loading ? <Skeleton /> : "Auction"} - Details
                 </Card.Title>
-                <div className="card-tools">
-                  <FaEdit
-                    style={{ color: "blue" }}
-                    // onClick={() => setModalShow(true)}
-                  />
-                </div>
               </Card.Header>
               <Card.Body>
                 <Row>
@@ -119,19 +116,86 @@ const ViewAuction = () => {
                       {loading ? <Skeleton /> : getTime(auction?.auction_end)}
                     </p>
                   </Col>
+
                   <Col md={4}>
                     <p className="mb-0">
                       <strong>Auction Status</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : auction?.status}</p>
+                    <p>
+                      {loading ? (
+                        <Skeleton />
+                      ) : (
+                        <span
+                          className={`badge ${
+                            auction?.status === "active"
+                              ? "bg-success"
+                              : auction?.status === "closed"
+                              ? "bg-danger"
+                              : "bg-secondary"
+                          }`}
+                        >
+                          {auction?.status}
+                        </span>
+                      )}
+                    </p>
+                  </Col>
+                  {bids && bids.length > 0 && (
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>Highest Bid</strong>
+                      </p>
+                      <p>{loading ? <Skeleton /> : bids[0]?.bid_amount}</p>
+                    </Col>
+                  )}
+                </Row>
+              </Card.Body>
+            </Card>
+
+            <Card
+              style={{
+                marginTop: "1rem",
+              }}
+            >
+              <Card.Header
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <Card.Title>
+                  {loading ? <Skeleton /> : "Auctioned Car"} - Detail(s)
+                </Card.Title>
+              </Card.Header>
+              <Card.Body>
+                <Row>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Model</strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : auction?.car?.model}</p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Manufacturing Company</strong>
+                    </p>
+                    <p>
+                      {loading ? (
+                        <Skeleton />
+                      ) : (
+                        auction?.car?.manufacture_company
+                      )}
+                    </p>
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
                       <strong>Manufacturing Year</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : auction?.manufacture_year}</p>
+                    <p>
+                      {loading ? <Skeleton /> : auction?.car?.manufacture_year}
+                    </p>
                   </Col>
-                  {/* <Col md={4}>
+                  <Col md={4}>
                     <p className="mb-0">
                       <strong>VIN</strong>
                     </p>
@@ -139,7 +203,7 @@ const ViewAuction = () => {
                       {loading ? (
                         <Skeleton />
                       ) : (
-                        car?.unique_identification_number
+                        auction?.car?.unique_identification_number
                       )}
                     </p>
                   </Col>
@@ -147,162 +211,124 @@ const ViewAuction = () => {
                     <p className="mb-0">
                       <strong>Colour</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : car?.color}</p>
+                    <p>{loading ? <Skeleton /> : auction?.car?.color}</p>
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
                       <strong>Fuel Type</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : car?.fuel_type}</p>
+                    <p>{loading ? <Skeleton /> : auction?.car?.fuel_type}</p>
                   </Col>
-                  {car?.transmission_type && (
+                  {auction?.car?.transmission_type && (
                     <Col md={4}>
                       <p className="mb-0">
                         <strong>Transmission Type</strong>
                       </p>
-                      <p>{loading ? <Skeleton /> : car?.transmission_type}</p>
+                      <p>
+                        {loading ? (
+                          <Skeleton />
+                        ) : (
+                          auction?.car?.transmission_type
+                        )}
+                      </p>
                     </Col>
                   )}
-                  {car?.engine_capacity && (
+                  {auction?.car?.engine_capacity && (
                     <Col md={4}>
                       <p className="mb-0">
                         <strong>Engine Capacity(in cc)</strong>
                       </p>
-                      <p>{loading ? <Skeleton /> : car?.engine_capacity}</p>
-                    </Col>
-                  )}
-                  {car?.economy && (
-                    <Col md={4}>
-                      <p className="mb-0">
-                        <strong>Economy(in kmpl)</strong>
+                      <p>
+                        {loading ? <Skeleton /> : auction?.car?.engine_capacity}
                       </p>
-                      <p>{loading ? <Skeleton /> : car?.economy}</p>
                     </Col>
                   )}
                   <Col md={4}>
                     <p className="mb-0">
                       <strong>Odometer Reading</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : car?.odometer_reading}</p>
+                    <p>
+                      {loading ? <Skeleton /> : auction?.car?.odometer_reading}
+                    </p>
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
                       <strong>Drive Type</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : car?.drive_type}</p>
+                    <p>{loading ? <Skeleton /> : auction?.car?.drive_type}</p>
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
                       <strong>Number Of Cylinder's</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : car?.num_of_cylinders}</p>
-                  </Col>
-                  {car?.seller_address && (
-                    <Col md={4}>
-                      <p className="mb-0">
-                        <strong>Seller Address</strong>
-                      </p>
-                      <p>{loading ? <Skeleton /> : car?.seller_address}</p>
-                    </Col>
-                  )}
-                  {car?.car_location && (
-                    <Col md={4}>
-                      <p className="mb-0">
-                        <strong>Car Location</strong>
-                      </p>
-                      <p>{loading ? <Skeleton /> : car?.car_location}</p>
-                    </Col>
-                  )}
-                  <Col md={4}>
-                    <p className="mb-0">
-                      <strong>Created At</strong>
+                    <p>
+                      {loading ? <Skeleton /> : auction?.car?.num_of_cylinders}
                     </p>
-                    <p>{loading ? <Skeleton /> : getDateTime(car.createdAt)}</p>
                   </Col>
-                  <Col md={4}>
+                  <Col md={12}>
                     <p className="mb-0">
-                      <strong>Last Update</strong>
+                      <strong>Car Image(s)</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : getDateTime(car.updatedAt)}</p>
-                  </Col> */}
+                    <p>
+                      {loading ? (
+                        <Skeleton />
+                      ) : auction?.car?.images &&
+                        auction?.car?.images.length > 0 ? (
+                        auction?.car?.images.map((image, index) => (
+                          <img
+                            key={index}
+                            src={image}
+                            alt="car"
+                            className="profile_pic"
+                          />
+                        ))
+                      ) : (
+                        "No Image(s)"
+                      )}
+                    </p>
+                  </Col>
                 </Row>
               </Card.Body>
             </Card>
-
-            {/* <Card
+            <Card
               style={{
                 marginTop: "1rem",
               }}
             >
-              <Card.Header
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
+              <Card.Header>
                 <Card.Title>
-                  {loading ? <Skeleton /> : `${car?.model}`} - Image(s)
+                  {loading ? <Skeleton /> : "All Bid(s) Of Auction - Detail(s)"}
                 </Card.Title>
-                <Button>Add More Images</Button>
               </Card.Header>
               <Card.Body>
-                {car?.images &&
-                  car?.images.length > 0 &&
-                  car?.images.map((image, index) => (
-                    <img
-                      key={index}
-                      src={image}
-                      alt="car"
-                      className="profile_pic"
-                    />
-                  ))}
+                {bids && bids.length > 0 ? (
+                  <Table responsive striped bordered hover>
+                    <thead>
+                      <tr>
+                        <th>S.No</th>
+                        <th>Bidder</th>
+                        <th>Bid Amount</th>
+                        <th>Bid Date</th>
+                        <th>Bid Time</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {bids.map((bid, i) => (
+                        <tr key={bid?._id} className="odd">
+                          <td className="text-center">{i + 1}</td>
+                          <td>{bid?.bidder?.name}</td>
+                          <td>{bid?.bid_amount}</td>
+                          <td>{getDate(bid?.createdAt)}</td>
+                          <td>{getTime(bid?.createdAt)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                ) : (
+                  <MessageBox variant="info">No Bid(s) Found</MessageBox>
+                )}
               </Card.Body>
-            </Card> */}
-
-            {/* <Card
-              style={{
-                marginTop: "1rem",
-              }}
-            >
-              <Card.Header
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Card.Title>
-                  {loading ? <Skeleton /> : `${car?.model}`} - Description
-                </Card.Title>
-                <Button>Edit Description</Button>
-              </Card.Header>
-              <Card.Body>{car?.description}</Card.Body>
-            </Card> */}
-
-            {/* <Card
-              style={{
-                marginTop: "1rem",
-              }}
-            >
-              <Card.Header
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Card.Title>
-                  {loading ? <Skeleton /> : `${car?.model}`} - Key Feature(s)
-                </Card.Title>
-                <Button>Edit Feature</Button>
-              </Card.Header>
-              <Card.Body>
-                {car?.key_highlights
-                  ? car?.key_highlights
-                  : "No Key Features Found."}
-              </Card.Body>
-            </Card> */}
+            </Card>
             <ToastContainer />
           </>
         )}

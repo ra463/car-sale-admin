@@ -154,14 +154,6 @@ const ViewCar = () => {
                       <p>{loading ? <Skeleton /> : car?.engine_capacity}</p>
                     </Col>
                   )}
-                  {car?.economy && (
-                    <Col md={4}>
-                      <p className="mb-0">
-                        <strong>Economy(in kmpl)</strong>
-                      </p>
-                      <p>{loading ? <Skeleton /> : car?.economy}</p>
-                    </Col>
-                  )}
                   <Col md={4}>
                     <p className="mb-0">
                       <strong>Odometer Reading</strong>
@@ -274,9 +266,11 @@ const ViewCar = () => {
                 <Button>Edit Feature</Button>
               </Card.Header>
               <Card.Body>
-                {car?.key_highlights
-                  ? car?.key_highlights
-                  : <b>No Key Features Found</b>}
+                {car?.key_highlights ? (
+                  car?.key_highlights
+                ) : (
+                  <b>No Key Features Found</b>
+                )}
               </Card.Body>
             </Card>
 
