@@ -20,6 +20,7 @@ export default function EditCarModel(props) {
 
   const [manufacture_company, setManufacture_company] = useState("");
   const [registration_date, setRegistration_date] = useState("");
+  const [is_registered, setIs_registered] = useState("");
   const [model, setModel] = useState("");
   const [manufacture_year, setManufacture_year] = useState("");
   const [registration_no, setRegistration_no] = useState("");
@@ -33,16 +34,14 @@ export default function EditCarModel(props) {
   const [drive_type, setDrive_type] = useState("");
   const [num_of_cylinders, setNum_of_cylinders] = useState("");
   const [description, setDescription] = useState("");
-  const [sellerStreet, setSellerStreet] = useState("");
-  const [sellerCity, setSellerCity] = useState("");
-  const [sellerLandmark, setSellerLandmark] = useState("");
-  const [carLocationStreet, setCarLocationStreet] = useState("");
-  const [carLocationCity, setCarLocationCity] = useState("");
-  const [carLocationLandmark, setCarLocationLandmark] = useState("");
+  const [car_address, setCar_address] = useState("");
+  const [car_city, setCar_city] = useState("");
+  const [car_postal_code, setCar_postal_code] = useState();
 
   const resetForm = () => {
     setManufacture_company("");
     setRegistration_date("");
+    setIs_registered("");
     setModel("");
     setManufacture_year("");
     setRegistration_no("");
@@ -55,12 +54,9 @@ export default function EditCarModel(props) {
     setDrive_type("");
     setNum_of_cylinders("");
     setDescription("");
-    setSellerStreet("");
-    setSellerCity("");
-    setSellerLandmark("");
-    setCarLocationStreet("");
-    setCarLocationCity("");
-    setCarLocationLandmark("");
+    setCar_address("");
+    setCar_city("");
+    setCar_postal_code();
   };
   useEffect(() => {
     const fetchData = async () => {
@@ -74,6 +70,7 @@ export default function EditCarModel(props) {
         const car = data.car;
         setManufacture_company(car.manufacture_company);
         setRegistration_date(car.registration_date);
+        setIs_registered(car.is_registered);
         setModel(car.model);
         setManufacture_year(car.manufacture_year);
         setRegistration_no(car.registration_no);
@@ -86,12 +83,9 @@ export default function EditCarModel(props) {
         setDrive_type(car.drive_type);
         setNum_of_cylinders(car.num_of_cylinders);
         setDescription(car.description);
-        setSellerStreet(car.sellerStreet);
-        setSellerCity(car.sellerCity);
-        setSellerLandmark(car.sellerLandmark);
-        setCarLocationStreet(car.carLocationStreet);
-        setCarLocationCity(car.carLocationCity);
-        setCarLocationLandmark(car.carLocationLandmark);
+        setCar_address(car.car_address);
+        setCar_city(car.car_city);
+        setCar_postal_code(car.car_postal_code);
 
         dispatch({ type: "FETCH_SUCCESS" });
       } catch (err) {
@@ -130,12 +124,10 @@ export default function EditCarModel(props) {
           drive_type,
           num_of_cylinders,
           description,
-          sellerStreet,
-          sellerCity,
-          sellerLandmark,
-          carLocationStreet,
-          carLocationCity,
-          carLocationLandmark,
+          car_address,
+          car_city,
+          car_postal_code,
+          is_registered,
         },
         {
           headers: {
@@ -200,6 +192,17 @@ export default function EditCarModel(props) {
                 type="text"
                 required
               />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="registration_date">
+              <Form.Label>Is Registered</Form.Label>
+              <Form.Select
+                value={is_registered}
+                onChange={(e) => setIs_registered(e.target.value)}
+                aria-label="Default select example"
+              >
+                <option value="true">True</option>
+                <option value="false">False</option>
+              </Form.Select>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="model">
@@ -318,41 +321,11 @@ export default function EditCarModel(props) {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="seller_street">
-              <Form.Label>Seller Street</Form.Label>
-              <Form.Control
-                value={sellerStreet}
-                onChange={(e) => setSellerStreet(e.target.value)}
-                type="text"
-                required
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="seller_city">
-              <Form.Label>Seller City</Form.Label>
-              <Form.Control
-                value={sellerCity}
-                onChange={(e) => setSellerCity(e.target.value)}
-                type="text"
-                required
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="seller_landmark">
-              <Form.Label>Seller Landmark</Form.Label>
-              <Form.Control
-                value={sellerLandmark}
-                onChange={(e) => setSellerLandmark(e.target.value)}
-                type="text"
-                required
-              />
-            </Form.Group>
-
             <Form.Group className="mb-3" controlId="car_street">
-              <Form.Label>Car Location Street</Form.Label>
+              <Form.Label>Car Location Address</Form.Label>
               <Form.Control
-                value={carLocationStreet}
-                onChange={(e) => setCarLocationStreet(e.target.value)}
+                value={car_address}
+                onChange={(e) => setCar_address(e.target.value)}
                 type="text"
                 required
               />
@@ -361,18 +334,18 @@ export default function EditCarModel(props) {
             <Form.Group className="mb-3" controlId="car_city">
               <Form.Label>Car Location City</Form.Label>
               <Form.Control
-                value={carLocationCity}
-                onChange={(e) => setCarLocationCity(e.target.value)}
+                value={car_city}
+                onChange={(e) => setCar_city(e.target.value)}
                 type="text"
                 required
               />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="car_landmark">
-              <Form.Label>Car Location LandMark</Form.Label>
+              <Form.Label>Car Location Pincode</Form.Label>
               <Form.Control
-                value={carLocationLandmark}
-                onChange={(e) => setCarLocationLandmark(e.target.value)}
+                value={car_postal_code}
+                onChange={(e) => setCar_postal_code(e.target.value)}
                 type="text"
                 required
               />

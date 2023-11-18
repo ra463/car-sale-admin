@@ -164,8 +164,8 @@ export default function Auction() {
                         <td>{auction?.seller?.name}</td>
                         <td>{getDateTime(auction?.auction_start)}</td>
                         <td>{getDateTime(auction?.auction_end)}</td>
-                        {auction?.highest_bid ? (
-                          <td>${auction?.highest_bid?.bid_amount}</td>
+                        {auction?.highest_bid !== 0 ? (
+                          <td>${auction?.highest_bid}</td>
                         ) : (
                           <td>
                             <b>No bid</b>

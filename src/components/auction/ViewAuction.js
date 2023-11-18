@@ -20,9 +20,6 @@ const ViewAuction = () => {
     error: "",
   });
 
-  console.log(auction);
-  console.log(bids);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -146,14 +143,20 @@ const ViewAuction = () => {
                       )}
                     </p>
                   </Col>
-                  {bids && bids.length > 0 && (
-                    <Col md={4}>
-                      <p className="mb-0">
-                        <strong>Highest Bid</strong>
-                      </p>
-                      <p>{loading ? <Skeleton /> : bids[0]?.bid_amount}</p>
-                    </Col>
-                  )}
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Highest Bid</strong>
+                    </p>
+                    <p>
+                      {loading ? (
+                        <Skeleton />
+                      ) : auction?.highest_bid !== 0 ? (
+                        auction?.highest_bid
+                      ) : (
+                        "No Bid"
+                      )}
+                    </p>
+                  </Col>
                 </Row>
               </Card.Body>
             </Card>

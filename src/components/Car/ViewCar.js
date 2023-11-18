@@ -172,20 +172,28 @@ const ViewCar = () => {
                     </p>
                     <p>{loading ? <Skeleton /> : car?.num_of_cylinders}</p>
                   </Col>
-                  {car?.seller_address && (
+                  {car?.car_address && (
                     <Col md={4}>
                       <p className="mb-0">
-                        <strong>Seller Address</strong>
+                        <strong>Car Address</strong>
                       </p>
-                      <p>{loading ? <Skeleton /> : car?.seller_address}</p>
+                      <p>{loading ? <Skeleton /> : car?.car_address}</p>
                     </Col>
                   )}
-                  {car?.car_location && (
+                  {car?.car_city && (
                     <Col md={4}>
                       <p className="mb-0">
-                        <strong>Car Location</strong>
+                        <strong>Car City</strong>
                       </p>
-                      <p>{loading ? <Skeleton /> : car?.car_location}</p>
+                      <p>{loading ? <Skeleton /> : car?.car_city}</p>
+                    </Col>
+                  )}
+                  {car?.car_postal_code && (
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>Car Pincode</strong>
+                      </p>
+                      <p>{loading ? <Skeleton /> : car?.car_postal_code}</p>
                     </Col>
                   )}
                   <Col md={4}>
@@ -248,7 +256,7 @@ const ViewCar = () => {
               <Card.Body>{car?.description}</Card.Body>
             </Card>
 
-            <Card
+            {/* <Card
               style={{
                 marginTop: "1rem",
               }}
@@ -272,7 +280,7 @@ const ViewCar = () => {
                   <b>No Key Features Found</b>
                 )}
               </Card.Body>
-            </Card>
+            </Card> */}
 
             <EditCarModel show={modalShow} onHide={() => setModalShow(false)} />
             <ToastContainer />
