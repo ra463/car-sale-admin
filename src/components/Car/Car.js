@@ -120,7 +120,7 @@ export default function Cars() {
                 <InputGroup>
                   <Form.Control
                     aria-label="Search Input"
-                    placeholder="Search"
+                    placeholder="Search By Car Model"
                     type="search"
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}

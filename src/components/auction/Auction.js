@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import { Store } from "../../Store";
 import { auctionReducer } from "../../reducers/auction";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
 import {
@@ -37,7 +37,7 @@ export default function Auction() {
       error: "",
     });
 
-    console.log(auctions);
+  console.log(auctions);
 
   const deleteUser = async (id) => {
     if (
@@ -122,7 +122,7 @@ export default function Auction() {
                 <InputGroup>
                   <Form.Control
                     aria-label="Search Input"
-                    placeholder="Search"
+                    placeholder="Search By Auction Status"
                     type="search"
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
@@ -160,7 +160,7 @@ export default function Auction() {
                     auctions.map((auction, i) => (
                       <tr key={auction?._id} className="odd">
                         <td className="text-center">{skip + i + 1}</td>
-                        <td>{auction?._id}</td>
+                        <td style={{ color: "orange" }}>#{auction?._id}</td>
                         <td>{auction?.seller?.name}</td>
                         <td>{getDateTime(auction?.auction_start)}</td>
                         <td>{getDateTime(auction?.auction_end)}</td>

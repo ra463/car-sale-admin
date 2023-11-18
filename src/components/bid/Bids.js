@@ -162,8 +162,11 @@ export default function Bid() {
                           </Link>
                         </td>
                         <td>
-                          <Link to={`/api/admin/view/auction/${bid?.auction}`}>
-                            {bid?.auction}
+                          <Link
+                            style={{ color: "orange" }}
+                            to={`/api/admin/view/auction/${bid?.auction}`}
+                          >
+                            #{bid?.auction}
                           </Link>
                         </td>
                         <td>{bid?.bid_amount}</td>

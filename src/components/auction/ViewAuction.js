@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useContext, useState } from "react";
+import React, { useEffect, useReducer, useContext } from "react";
 import { Store } from "../../Store";
 import { getError } from "../../utils/error";
 import { viewAuctionReducer as reducer } from "../../reducers/auction";
@@ -7,7 +7,6 @@ import { toast, ToastContainer } from "react-toastify";
 import { Card, Col, Container, Row, Table } from "react-bootstrap";
 import MessageBox from "../layout/MessageBox";
 import axiosInstance from "../../utils/axiosUtil";
-import { FaEdit } from "react-icons/fa";
 import Skeleton from "react-loading-skeleton";
 import { motion } from "framer-motion";
 
@@ -78,6 +77,14 @@ const ViewAuction = () => {
               </Card.Header>
               <Card.Body>
                 <Row>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Auction ID</strong>
+                    </p>
+                    <p style={{ color: "orange" }}>
+                      #{loading ? <Skeleton /> : auction?._id}
+                    </p>
+                  </Col>
                   <Col md={4}>
                     <p className="mb-0">
                       <strong>Auction Created By</strong>
