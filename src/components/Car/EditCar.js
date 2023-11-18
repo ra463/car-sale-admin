@@ -328,6 +328,7 @@ export default function EditCarModel(props) {
                 onChange={(e) => setCar_address(e.target.value)}
                 type="text"
                 required
+                as="textarea"
               />
             </Form.Group>
 
@@ -346,7 +347,7 @@ export default function EditCarModel(props) {
               <Form.Control
                 value={car_postal_code}
                 onChange={(e) => setCar_postal_code(e.target.value)}
-                type="text"
+                type="number"
                 required
               />
             </Form.Group>

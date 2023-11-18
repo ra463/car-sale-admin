@@ -24,6 +24,8 @@ export default function EditUserModel(props) {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [role, setRole] = useState("");
   const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [pincode, setPincode] = useState();
 
   const resetForm = () => {
     setName("");
@@ -32,6 +34,8 @@ export default function EditUserModel(props) {
     setPhoneNumber("");
     setRole("");
     setAddress("");
+    setCity("");
+    setPincode();
   };
   useEffect(() => {
     const fetchData = async () => {
@@ -50,6 +54,8 @@ export default function EditUserModel(props) {
         setPhoneNumber(user.phoneNumber);
         setRole(user.role);
         setAddress(user.address);
+        setCity(user.city);
+        setPincode(user.pincode);
 
         dispatch({ type: "FETCH_SUCCESS" });
       } catch (err) {
@@ -80,6 +86,8 @@ export default function EditUserModel(props) {
           age,
           phoneNumber,
           address,
+          city,
+          pincode,
         },
         {
           headers: {
@@ -170,6 +178,7 @@ export default function EditUserModel(props) {
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 required
+                as="textarea"
               />
             </Form.Group>
 
@@ -185,6 +194,24 @@ export default function EditUserModel(props) {
                 <option value="user">User</option>
                 <option value="admin">Admin</option>
               </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="address">
+              <Form.Label>City</Form.Label>
+              <Form.Control
+                type="text"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="address">
+              <Form.Label>Pincode</Form.Label>
+              <Form.Control
+                value={pincode}
+                type="number"
+                onChange={(e) => setPincode(e.target.value)}
+                required
+              />
             </Form.Group>
             <ToastContainer />
           </Container>
