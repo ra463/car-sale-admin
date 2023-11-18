@@ -78,6 +78,14 @@ const ViewUser = () => {
                 <Row>
                   <Col md={4}>
                     <p className="mb-0">
+                      <strong>Client ID</strong>
+                    </p>
+                    <p style={{ color: "orange" }}>
+                      #{loading ? <Skeleton /> : user?._id}
+                    </p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
                       <strong>FullName</strong>
                     </p>
                     <p>{loading ? <Skeleton /> : user?.name}</p>

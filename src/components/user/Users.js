@@ -115,7 +115,7 @@ export default function Users() {
                 <InputGroup>
                   <Form.Control
                     aria-label="Search Input"
-                    placeholder="Search"
+                    placeholder="Search by Client ID"
                     type="search"
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
