@@ -89,11 +89,6 @@ export default function Users() {
   const numOfPages = Math.ceil(filteredUserCount / resultPerPage);
   const skip = resultPerPage * (curPage - 1);
 
-  const getDateTime = (dt) => {
-    const dT = dt.split(".")[0].split("T");
-    return `${dT[0]} ${dT[1]}`;
-  };
-
   return (
     <motion.div
       initial={{ x: "-100%" }}
@@ -113,23 +108,6 @@ export default function Users() {
                 alignItems: "center",
               }}
             >
-              {/* <div className="float-start d-flex align-items-center">
-                <p className="p-bold m-0 me-3">Filter by Role</p>
-                <Form.Group controlId="status">
-                  <Form.Select
-                    value={role}
-                    onChange={(e) => {
-                      setRole(e.target.value);
-                      setCurPage(1);
-                    }}
-                    aria-label="Default select example"
-                  >
-                    <option value="all">All</option>
-                    <option value="user">Seller</option>
-                    <option value="intermediary">Buyer</option>
-                  </Form.Select>
-                </Form.Group>
-              </div> */}
               <span>
                 Total Users: <b>{filteredUserCount}</b>
               </span>
@@ -159,10 +137,10 @@ export default function Users() {
                 <thead>
                   <tr>
                     <th>S.No</th>
+                    <th>Client ID</th>
                     <th>FullName</th>
                     <th>Email</th>
                     <th>Age</th>
-                    <th>Reg. Date</th>
                     <th>Mobile No.</th>
                     <th>Role</th>
                     <th>Actions</th>
@@ -175,12 +153,10 @@ export default function Users() {
                     users.map((user, i) => (
                       <tr key={user?._id} className="odd">
                         <td className="text-center">{skip + i + 1}</td>
+                        <td style={{ color: "orange" }}>#{user?._id}</td>
                         <td>{user?.name}</td>
                         <td>{user?.email}</td>
                         <td>{user?.age}</td>
-                        <td>
-                          {getDateTime(user?.createdAt && user?.createdAt)}
-                        </td>
                         <td>{user?.phoneNumber}</td>
                         <td>
                           {user?.role === "user" ? (
