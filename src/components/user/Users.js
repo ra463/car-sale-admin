@@ -153,7 +153,7 @@ export default function Users() {
                     users.map((user, i) => (
                       <tr key={user?._id} className="odd">
                         <td className="text-center">{skip + i + 1}</td>
-                        <td style={{ color: "orange" }}>#{user?._id}</td>
+                        <td style={{ color: "orange" }}>#{user?.clientId}</td>
                         <td>{user?.name}</td>
                         <td>{user?.email}</td>
                         <td>{user?.age}</td>

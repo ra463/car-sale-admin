@@ -81,7 +81,7 @@ const ViewUser = () => {
                       <strong>Client ID</strong>
                     </p>
                     <p style={{ color: "orange" }}>
-                      #{loading ? <Skeleton /> : user?._id}
+                      #{loading ? <Skeleton /> : user?.clientId}
                     </p>
                   </Col>
                   <Col md={4}>
