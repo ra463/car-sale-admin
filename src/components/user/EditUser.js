@@ -26,7 +26,7 @@ export default function EditUserModel(props) {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [states, setState] = useState("");
-  const [pincode, setPincode] = useState();
+  const [postal_code, setPostal_code] = useState();
 
   const resetForm = () => {
     setName("");
@@ -37,7 +37,7 @@ export default function EditUserModel(props) {
     setAddress("");
     setCity("");
     setState("");
-    setPincode();
+    setPostal_code();
   };
   useEffect(() => {
     const fetchData = async () => {
@@ -58,7 +58,7 @@ export default function EditUserModel(props) {
         setAddress(user.address);
         setCity(user.city);
         setState(user.state);
-        setPincode(user.pincode);
+        setPostal_code(user.postal_code);
 
         dispatch({ type: "FETCH_SUCCESS" });
       } catch (err) {
@@ -91,7 +91,7 @@ export default function EditUserModel(props) {
           address,
           city,
           state: states,
-          pincode,
+          postal_code,
         },
         {
           headers: {
@@ -175,17 +175,6 @@ export default function EditUserModel(props) {
                 type="number"
               />
             </Form.Group>
-
-            <Form.Group className="mb-3" controlId="address">
-              <Form.Label>Address</Form.Label>
-              <Form.Control
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                required
-                as="textarea"
-              />
-            </Form.Group>
-
             <Form.Group className="mb-3" controlId="role">
               <Form.Label>Role</Form.Label>
               <Form.Select
@@ -220,10 +209,19 @@ export default function EditUserModel(props) {
             <Form.Group className="mb-3" controlId="address">
               <Form.Label>Pincode</Form.Label>
               <Form.Control
-                value={pincode}
+                value={postal_code}
                 type="number"
-                onChange={(e) => setPincode(e.target.value)}
+                onChange={(e) => setPostal_code(e.target.value)}
                 required
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="address">
+              <Form.Label>Address</Form.Label>
+              <Form.Control
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                required
+                as="textarea"
               />
             </Form.Group>
             <ToastContainer />
