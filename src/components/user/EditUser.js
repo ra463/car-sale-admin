@@ -25,6 +25,7 @@ export default function EditUserModel(props) {
   const [role, setRole] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
+  const [states, setState] = useState("");
   const [pincode, setPincode] = useState();
 
   const resetForm = () => {
@@ -35,6 +36,7 @@ export default function EditUserModel(props) {
     setRole("");
     setAddress("");
     setCity("");
+    setState("");
     setPincode();
   };
   useEffect(() => {
@@ -55,6 +57,7 @@ export default function EditUserModel(props) {
         setRole(user.role);
         setAddress(user.address);
         setCity(user.city);
+        setState(user.state);
         setPincode(user.pincode);
 
         dispatch({ type: "FETCH_SUCCESS" });
@@ -87,6 +90,7 @@ export default function EditUserModel(props) {
           phoneNumber,
           address,
           city,
+          state: states,
           pincode,
         },
         {
@@ -201,6 +205,15 @@ export default function EditUserModel(props) {
                 type="text"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="address">
+              <Form.Label>State</Form.Label>
+              <Form.Control
+                type="text"
+                value={states}
+                onChange={(e) => setState(e.target.value)}
                 required
               />
             </Form.Group>
