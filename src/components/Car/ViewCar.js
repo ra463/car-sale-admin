@@ -180,6 +180,14 @@ const ViewCar = () => {
                       <p>{loading ? <Skeleton /> : car?.car_address}</p>
                     </Col>
                   )}
+                  {car?.car_state && (
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>Car State</strong>
+                      </p>
+                      <p>{loading ? <Skeleton /> : car?.car_state}</p>
+                    </Col>
+                  )}
                   {car?.car_city && (
                     <Col md={4}>
                       <p className="mb-0">

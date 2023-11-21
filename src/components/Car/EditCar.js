@@ -36,6 +36,7 @@ export default function EditCarModel(props) {
   const [description, setDescription] = useState("");
   const [car_address, setCar_address] = useState("");
   const [car_city, setCar_city] = useState("");
+  const [car_state, setCar_state] = useState("");
   const [car_postal_code, setCar_postal_code] = useState();
 
   const resetForm = () => {
@@ -56,6 +57,7 @@ export default function EditCarModel(props) {
     setDescription("");
     setCar_address("");
     setCar_city("");
+    setCar_state("");
     setCar_postal_code();
   };
   useEffect(() => {
@@ -85,6 +87,7 @@ export default function EditCarModel(props) {
         setDescription(car.description);
         setCar_address(car.car_address);
         setCar_city(car.car_city);
+        setCar_state(car.car_state);
         setCar_postal_code(car.car_postal_code);
 
         dispatch({ type: "FETCH_SUCCESS" });
@@ -126,6 +129,7 @@ export default function EditCarModel(props) {
           description,
           car_address,
           car_city,
+          car_state,
           car_postal_code,
           is_registered,
         },
@@ -337,6 +341,16 @@ export default function EditCarModel(props) {
               <Form.Control
                 value={car_city}
                 onChange={(e) => setCar_city(e.target.value)}
+                type="text"
+                required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="car_city">
+              <Form.Label>Car Location State</Form.Label>
+              <Form.Control
+                value={car_state}
+                onChange={(e) => setCar_state(e.target.value)}
                 type="text"
                 required
               />
