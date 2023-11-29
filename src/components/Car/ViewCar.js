@@ -49,10 +49,6 @@ const ViewCar = () => {
     const dT = dt.split(".")[0].split("T");
     return `${dT[0]} ${dT[1]}`;
   };
-  const getDate = (dt) => {
-    const dT = dt.split(".")[0].split("T");
-    return dT[0];
-  };
 
   return (
     <motion.div
@@ -92,22 +88,6 @@ const ViewCar = () => {
                     </p>
                     <p>{loading ? <Skeleton /> : car?.model}</p>
                   </Col>
-                  <Col md={4}>
-                    <p className="mb-0">
-                      <strong>Registration Date</strong>
-                    </p>
-                    <p>
-                      {loading ? <Skeleton /> : getDate(car?.registration_date)}
-                    </p>
-                  </Col>
-                  {car?.registration_no && (
-                    <Col md={4}>
-                      <p className="mb-0">
-                        <strong>Registration Number</strong>
-                      </p>
-                      <p>{loading ? <Skeleton /> : car?.registration_no}</p>
-                    </Col>
-                  )}
                   <Col md={4}>
                     <p className="mb-0">
                       <strong>Manufacturing Year</strong>
@@ -238,8 +218,7 @@ const ViewCar = () => {
                 <Button>Add More Images</Button>
               </Card.Header>
               <Card.Body>
-                {car?.images &&
-                  car?.images.length > 0 &&
+                {car?.images && car?.images.length > 0 ? (
                   car?.images.map((image, index) => (
                     <img
                       key={index}
@@ -247,7 +226,10 @@ const ViewCar = () => {
                       alt="car"
                       className="profile_pic"
                     />
-                  ))}
+                  ))
+                ) : (
+                  <MessageBox variant="danger">No Images Found</MessageBox>
+                )}
               </Card.Body>
             </Card>
 

@@ -144,7 +144,7 @@ export default function Auction() {
                 <thead>
                   <tr>
                     <th>S.No</th>
-                    <th>AuctionId</th>
+                    <th>Auction Id</th>
                     <th>Seller</th>
                     <th>Auction Start</th>
                     <th>Auction End</th>

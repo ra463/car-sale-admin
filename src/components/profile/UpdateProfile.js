@@ -83,15 +83,16 @@ export default function UpdateProfileModel(props) {
         }
       );
       if (data) {
+        dispatch({ type: "UPDATE_SUCCESS" });
         toast.success("User Updated Successfully.", {
           position: toast.POSITION.BOTTOM_CENTER,
         });
         ctxDispatch({ type: "PROFILE_UPDATE", payload: data.user });
         localStorage.setItem("userInfo", JSON.stringify(data.user));
-
         resetForm();
+        props.onHide();
         setTimeout(() => {
-          dispatch({ type: "UPDATE_SUCCESS" });
+          window.location.reload();
         }, 3000);
       } else {
         dispatch({ type: "UPDATE_FAIL" });

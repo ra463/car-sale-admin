@@ -143,7 +143,7 @@ export default function Bid() {
                   <tr>
                     <th>S.No</th>
                     <th>Bidded By</th>
-                    <th>AuctionId</th>
+                    <th>Auction Id</th>
                     <th>Bid Amount</th>
                     <th>Bidded At</th>
                     <th>Actions</th>

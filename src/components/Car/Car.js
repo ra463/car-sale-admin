@@ -162,11 +162,15 @@ export default function Cars() {
                         <td>{car?.model}</td>
                         <td>{car?.unique_identification_number}</td>
                         <td>
-                          <img
-                            className="profile_pic_prev"
-                            src={car?.images[0]}
-                            alt="img"
-                          />
+                          {car.images && car.images.length > 0 ? (
+                            <img
+                              className="profile_pic_prev"
+                              src={car?.images[0]}
+                              alt="img"
+                            />
+                          ) : (
+                            <b>No Image</b>
+                          )}
                         </td>
                         <td>{car?.color}</td>
                         <td>{getDateTime(car?.createdAt && car?.createdAt)}</td>

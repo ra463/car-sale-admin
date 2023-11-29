@@ -141,9 +141,9 @@ export default function Transaction() {
                   <thead>
                     <tr>
                       <th>S.No</th>
-                      <th>TransactionId</th>
+                      <th>Transaction Id</th>
                       <th>Amount</th>
-                      <th>status</th>
+                      <th>Status</th>
                       <th>Created By</th>
                       <th>Created At</th>
                       <th>Actions</th>

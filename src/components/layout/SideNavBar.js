@@ -88,9 +88,9 @@ export default function SideNavbar({ isExpanded }) {
         >
           <div className="brand-link">
             {/* <img src={edwin_logo} alt="" width={"50px"} height="auto" /> */}
-            <span className="brand-text ms-2 font-weight-light">
+            <Link to="/admin/dashboard" className="brand-text ms-2 font-weight-light">
               Car Auction
-            </span>
+            </Link>
           </div>
 
           <div className="sidebar">

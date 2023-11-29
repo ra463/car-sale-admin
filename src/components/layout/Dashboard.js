@@ -11,7 +11,7 @@ import { FaArrowCircleRight, FaCarSide, FaChessKing } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { HiUsers } from "react-icons/hi";
 import { FaMoneyCheckAlt } from "react-icons/fa";
-import { MdMoney } from "react-icons/md";
+import { MdMoney, MdQuestionAnswer } from "react-icons/md";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -175,6 +175,30 @@ export default function Dashboard() {
                   </div>
                 )}
               </Col>
+
+              <Col lg={3} sm={6}>
+                {loading ? (
+                  <Skeleton count={5} />
+                ) : (
+                  <div className="small-box bg-danger">
+                    <div className="inner">
+                      <h3>
+                        {summary.bids && summary.bids[0]
+                          ? summary.bids[0].total
+                          : 0}
+                      </h3>
+                      <p>Total Bids</p>
+                    </div>
+                    <div className="icon">
+                      <MdMoney />
+                    </div>
+                    <Link to="/admin/bids" className="small-box-footer">
+                      More info {<FaArrowCircleRight />}
+                    </Link>
+                  </div>
+                )}
+              </Col>
+
               <Col lg={3} sm={6}>
                 {loading ? (
                   <Skeleton count={5} />
@@ -202,6 +226,29 @@ export default function Dashboard() {
                 {loading ? (
                   <Skeleton count={5} />
                 ) : (
+                  <div className="small-box bg-danger">
+                    <div className="inner">
+                      <h3>
+                        {summary.queries && summary.queries[0]
+                          ? summary.queries[0].total
+                          : 0}
+                      </h3>
+                      <p>Total Queries Submitted</p>
+                    </div>
+                    <div className="icon">
+                      <MdQuestionAnswer />
+                    </div>
+                    <Link to="/admin/queries" className="small-box-footer">
+                      More info {<FaArrowCircleRight />}
+                    </Link>
+                  </div>
+                )}
+              </Col>
+
+              <Col lg={3} sm={6}>
+                {loading ? (
+                  <Skeleton count={5} />
+                ) : (
                   <div className="small-box bg-info">
                     <div className="inner">
                       <h3>
@@ -213,6 +260,9 @@ export default function Dashboard() {
                     </div>
                     <div className="icon">
                       <FaMoneyCheckAlt />
+                    </div>
+                    <div className="small-box-footer">
+                      Total Amount
                     </div>
                   </div>
                 )}

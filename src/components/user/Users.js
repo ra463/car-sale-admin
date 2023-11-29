@@ -138,7 +138,7 @@ export default function Users() {
                   <tr>
                     <th>S.No</th>
                     <th>Client ID</th>
-                    <th>FullName</th>
+                    <th>Full Name</th>
                     <th>Email</th>
                     <th>Age</th>
                     <th>Mobile No.</th>

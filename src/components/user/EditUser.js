@@ -102,7 +102,7 @@ export default function EditUserModel(props) {
 
       if (data) {
         dispatch({ type: "UPDATE_SUCCESS" });
-        toast.success("User Updated Succesfully", {
+        toast.success("User Updated Successfully", {
           position: toast.POSITION.TOP_CENTER,
         });
         resetForm();
