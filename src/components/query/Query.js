@@ -140,7 +140,7 @@ export default function Query() {
                 <thead>
                   <tr>
                     <th>S.No</th>
-                    <th>FullName</th>
+                    <th>Submitted By</th>
                     <th>Email</th>
                     <th>Mobile No.</th>
                     <th>Registered On</th>
