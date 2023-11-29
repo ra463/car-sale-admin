@@ -203,7 +203,7 @@ export default function Dashboard() {
                 {loading ? (
                   <Skeleton count={5} />
                 ) : (
-                  <div className="small-box bg-danger">
+                  <div className="small-box bg-secondary">
                     <div className="inner">
                       <h3>
                         {summary.transactions && summary.transactions[0]
@@ -226,7 +226,7 @@ export default function Dashboard() {
                 {loading ? (
                   <Skeleton count={5} />
                 ) : (
-                  <div className="small-box bg-danger">
+                  <div className="small-box bg-primary">
                     <div className="inner">
                       <h3>
                         {summary.queries && summary.queries[0]
