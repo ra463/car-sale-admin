@@ -51,7 +51,7 @@ export default function Cars() {
           headers: { Authorization: token },
         });
         setDel(false);
-        toast.success("Car Deleted Successfully", {
+        toast.success("Vehicle Deleted Successfully", {
           position: toast.POSITION.TOP_CENTER,
         });
       } catch (error) {

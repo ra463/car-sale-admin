@@ -4,7 +4,7 @@ import { getError } from "../../utils/error";
 import { viewCarReducer as reducer } from "../../reducers/car";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { Card, Col, Container, Row } from "react-bootstrap";
 import MessageBox from "../layout/MessageBox";
 import axiosInstance from "../../utils/axiosUtil";
 import { FaEdit } from "react-icons/fa";

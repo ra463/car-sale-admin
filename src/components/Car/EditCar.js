@@ -164,7 +164,7 @@ export default function EditCarModel(props) {
 
       if (data) {
         dispatch({ type: "UPDATE_SUCCESS" });
-        toast.success("Car Updated Succesfully", {
+        toast.success("Vehicle Updated Succesfully", {
           position: toast.POSITION.TOP_CENTER,
         });
         resetForm();
