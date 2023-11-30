@@ -78,6 +78,12 @@ const ViewCar = () => {
                 <Row>
                   <Col md={4}>
                     <p className="mb-0">
+                      <strong>Vehicle Type</strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : car?.vehicle_type}</p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
                       <strong>Manufacturing Company</strong>
                     </p>
                     <p>{loading ? <Skeleton /> : car?.manufacture_company}</p>
@@ -108,9 +114,65 @@ const ViewCar = () => {
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
+                      <strong>Is Registered</strong>
+                    </p>
+                    <p>
+                      {loading ? (
+                        <Skeleton />
+                      ) : car?.is_registered == 0 ? (
+                        "False"
+                      ) : (
+                        "True"
+                      )}
+                    </p>
+                  </Col>
+                  {car?.is_registered === true && (
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>Expiry Date</strong>
+                      </p>
+                      <p>{loading ? <Skeleton /> : car?.expiry_date}</p>
+                    </Col>
+                  )}
+                  <Col md={4}>
+                    <p className="mb-0">
                       <strong>Colour</strong>
                     </p>
                     <p>{loading ? <Skeleton /> : car?.color}</p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Is Owner</strong>
+                    </p>
+                    <p>
+                      {loading ? (
+                        <Skeleton />
+                      ) : car?.owner == 0 ? (
+                        "False"
+                      ) : (
+                        "True"
+                      )}
+                    </p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Is Authorized Person</strong>
+                    </p>
+                    <p>
+                      {loading ? (
+                        <Skeleton />
+                      ) : car?.autorized_person == 0 ? (
+                        "False"
+                      ) : (
+                        "True"
+                      )}
+                    </p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Body Type</strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : car?.body_type}</p>
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
@@ -126,14 +188,23 @@ const ViewCar = () => {
                       <p>{loading ? <Skeleton /> : car?.transmission_type}</p>
                     </Col>
                   )}
-                  {car?.engine_capacity && (
-                    <Col md={4}>
-                      <p className="mb-0">
-                        <strong>Engine Capacity(in cc)</strong>
-                      </p>
-                      <p>{loading ? <Skeleton /> : car?.engine_capacity}</p>
-                    </Col>
-                  )}
+                  {car?.vehicle_type === "Car"
+                    ? car?.engine_capacity && (
+                        <Col md={4}>
+                          <p className="mb-0">
+                            <strong>Engine Capacity(in cc)</strong>
+                          </p>
+                          <p>{loading ? <Skeleton /> : car?.engine_capacity}</p>
+                        </Col>
+                      )
+                    : car?.engine_power && (
+                        <Col md={4}>
+                          <p className="mb-0">
+                            <strong>Engine Capacity(in hp)</strong>
+                          </p>
+                          <p>{loading ? <Skeleton /> : car?.engine_power}</p>
+                        </Col>
+                      )}
                   <Col md={4}>
                     <p className="mb-0">
                       <strong>Odometer Reading</strong>
@@ -184,6 +255,24 @@ const ViewCar = () => {
                       <p>{loading ? <Skeleton /> : car?.car_postal_code}</p>
                     </Col>
                   )}
+                  {car?.vehicle_type === "Truck" && (
+                    <>
+                      <Col md={4}>
+                        <p className="mb-0">
+                          <strong>Axle Configuration</strong>
+                        </p>
+                        <p>
+                          {loading ? <Skeleton /> : car?.axle_configuration}
+                        </p>
+                      </Col>
+                      <Col md={4}>
+                        <p className="mb-0">
+                          <strong>GVM (in kg)</strong>
+                        </p>
+                        <p>{loading ? <Skeleton /> : car?.gvm}</p>
+                      </Col>
+                    </>
+                  )}
                   <Col md={4}>
                     <p className="mb-0">
                       <strong>Created At</strong>
@@ -215,7 +304,7 @@ const ViewCar = () => {
                 <Card.Title>
                   {loading ? <Skeleton /> : `${car?.model}`} - Image(s)
                 </Card.Title>
-                <Button>Add More Images</Button>
+                {/* <Button>Add More Images</Button> */}
               </Card.Header>
               <Card.Body>
                 {car?.images && car?.images.length > 0 ? (

@@ -143,6 +143,7 @@ export default function Cars() {
                   <tr>
                     <th>S.No</th>
                     <th>Manufacturing Company</th>
+                    <th>Type</th>
                     <th>Model</th>
                     <th>VIN</th>
                     <th>Image</th>
@@ -153,12 +154,23 @@ export default function Cars() {
                 </thead>
                 <tbody>
                   {loading ? (
-                    <CustomSkeleton resultPerPage={resultPerPage} column={8} />
+                    <CustomSkeleton resultPerPage={resultPerPage} column={9} />
                   ) : cars && cars.length > 0 ? (
                     cars.map((car, i) => (
                       <tr key={car?._id} className="odd">
                         <td className="text-center">{skip + i + 1}</td>
                         <td>{car?.manufacture_company}</td>
+                        <td>
+                          {car?.vehicle_type === "Car" ? (
+                            <span className="text-secondary">
+                              <b>{car?.vehicle_type}</b>
+                            </span>
+                          ) : (
+                            <span className="text-warning">
+                              <b>{car?.vehicle_type}</b>
+                            </span>
+                          )}
+                        </td>
                         <td>{car?.model}</td>
                         <td>{car?.unique_identification_number}</td>
                         <td>
@@ -198,7 +210,7 @@ export default function Cars() {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="8" className="text-center">
+                      <td colSpan="9" className="text-center">
                         No Vehicles(s) Found
                       </td>
                     </tr>

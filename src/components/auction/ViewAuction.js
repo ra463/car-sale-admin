@@ -120,7 +120,26 @@ const ViewAuction = () => {
                       {loading ? <Skeleton /> : getTime(auction?.auction_end)}
                     </p>
                   </Col>
-
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Asking Price Visible Status</strong>
+                    </p>
+                    <p>
+                      {loading ? (
+                        <Skeleton />
+                      ) : auction?.show_hide_price == 0 ? (
+                        "Not Visible"
+                      ) : (
+                        "Visible"
+                      )}
+                    </p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Bidding Status</strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : auction?.reserve_flag}</p>
+                  </Col>
                   <Col md={4}>
                     <p className="mb-0">
                       <strong>Auction Status</strong>

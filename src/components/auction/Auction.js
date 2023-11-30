@@ -37,8 +37,6 @@ export default function Auction() {
       error: "",
     });
 
-  console.log(auctions);
-
   const deleteUser = async (id) => {
     if (
       window.confirm(
@@ -73,7 +71,6 @@ export default function Auction() {
           }
         );
 
-        console.log(res);
         dispatch({ type: "FETCH_SUCCESS", payload: res.data });
       } catch (error) {
         dispatch({

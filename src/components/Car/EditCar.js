@@ -18,12 +18,11 @@ export default function EditCarModel(props) {
     error: "",
   });
 
+  const [vehicle_type, setVehicle_type] = useState("");
   const [manufacture_company, setManufacture_company] = useState("");
-  const [registration_date, setRegistration_date] = useState("");
-  const [is_registered, setIs_registered] = useState("");
+  const [is_registered, setIs_registered] = useState();
   const [model, setModel] = useState("");
   const [manufacture_year, setManufacture_year] = useState("");
-  const [registration_no, setRegistration_no] = useState("");
   const [unique_identification_number, setUnique_identification_number] =
     useState("");
   const [color, setColor] = useState("");
@@ -38,14 +37,19 @@ export default function EditCarModel(props) {
   const [car_city, setCar_city] = useState("");
   const [car_state, setCar_state] = useState("");
   const [car_postal_code, setCar_postal_code] = useState();
+  const [expiry_date, setExpiry_date] = useState("");
+  const [owner, setOwner] = useState("");
+  const [autorized_person, setAutorized_person] = useState("");
+  const [body_type, setBody_type] = useState("");
+  const [axle_configuration, setAxle_configuration] = useState("");
+  const [gvm, setGvm] = useState();
+  const [engine_power, setEngine_power] = useState();
 
   const resetForm = () => {
     setManufacture_company("");
-    setRegistration_date("");
-    setIs_registered("");
+    setIs_registered();
     setModel("");
     setManufacture_year("");
-    setRegistration_no("");
     setUnique_identification_number("");
     setColor("");
     setFuel_type("");
@@ -59,6 +63,13 @@ export default function EditCarModel(props) {
     setCar_city("");
     setCar_state("");
     setCar_postal_code();
+    setExpiry_date("");
+    setOwner("");
+    setAutorized_person("");
+    setBody_type("");
+    setAxle_configuration("");
+    setGvm();
+    setEngine_power();
   };
   useEffect(() => {
     const fetchData = async () => {
@@ -70,17 +81,16 @@ export default function EditCarModel(props) {
         });
 
         const car = data.car;
+        setVehicle_type(car.vehicle_type);
         setManufacture_company(car.manufacture_company);
-        setRegistration_date(car.registration_date);
         setIs_registered(car.is_registered);
         setModel(car.model);
         setManufacture_year(car.manufacture_year);
-        setRegistration_no(car.registration_no);
         setUnique_identification_number(car.unique_identification_number);
         setColor(car.color);
         setFuel_type(car.fuel_type);
         setTransmission_type(car.transmission_type);
-        setEngine_capacity(car.engine_capacity);
+        car.engine_capacity && setEngine_capacity(car.engine_capacity);
         setOdometer_reading(car.odometer_reading);
         setDrive_type(car.drive_type);
         setNum_of_cylinders(car.num_of_cylinders);
@@ -89,6 +99,13 @@ export default function EditCarModel(props) {
         setCar_city(car.car_city);
         setCar_state(car.car_state);
         setCar_postal_code(car.car_postal_code);
+        setExpiry_date(car.expiry_date);
+        setOwner(car.owner);
+        setAutorized_person(car.autorized_person);
+        setBody_type(car.body_type);
+        car.axle_configuration && setAxle_configuration(car.axle_configuration);
+        car.gvm && setGvm(car.gvm);
+        car.engine_power && setEngine_power(car.engine_power);
 
         dispatch({ type: "FETCH_SUCCESS" });
       } catch (err) {
@@ -114,12 +131,17 @@ export default function EditCarModel(props) {
         `/api/admin/updatecar/${id}`,
         {
           manufacture_company,
-          registration_date,
           model,
           manufacture_year,
-          registration_no,
+          expiry_date,
           unique_identification_number,
           color,
+          owner,
+          autorized_person,
+          body_type,
+          axle_configuration,
+          gvm,
+          engine_power,
           fuel_type,
           transmission_type,
           engine_capacity,
@@ -187,21 +209,49 @@ export default function EditCarModel(props) {
                 required
               />
             </Form.Group>
-
-            <Form.Group className="mb-3" controlId="registration_date">
-              <Form.Label>Registration Date</Form.Label>
-              <Form.Control
-                value={registration_date}
-                onChange={(e) => setRegistration_date(e.target.value)}
-                type="text"
-                required
-              />
-            </Form.Group>
             <Form.Group className="mb-3" controlId="registration_date">
               <Form.Label>Is Registered</Form.Label>
               <Form.Select
                 value={is_registered}
                 onChange={(e) => setIs_registered(e.target.value)}
+                aria-label="Default select example"
+              >
+                <option value="true">True</option>
+                <option value="false">False</option>
+              </Form.Select>
+            </Form.Group>
+
+            {(is_registered == "true" || is_registered == true) && (
+              <Form.Group className="mb-3" controlId="model">
+                <Form.Label>Expiry Date</Form.Label>
+                <Form.Control
+                  value={expiry_date}
+                  onChange={(e) => setExpiry_date(e.target.value)}
+                  type="date"
+                  {...(is_registered == "true" || is_registered == true
+                    ? { required: true }
+                    : { required: false })}
+                />
+              </Form.Group>
+            )}
+
+            <Form.Group className="mb-3" controlId="registration_date">
+              <Form.Label>Is Owner</Form.Label>
+              <Form.Select
+                value={owner}
+                onChange={(e) => setOwner(e.target.value)}
+                aria-label="Default select example"
+              >
+                <option value="true">True</option>
+                <option value="false">False</option>
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="registration_date">
+              <Form.Label>Is Authorized Person</Form.Label>
+              <Form.Select
+                value={autorized_person}
+                onChange={(e) => setAutorized_person(e.target.value)}
                 aria-label="Default select example"
               >
                 <option value="true">True</option>
@@ -219,21 +269,53 @@ export default function EditCarModel(props) {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="manufacture-year">
-              <Form.Label>Manufacturing Year</Form.Label>
+            <Form.Group className="mb-3" controlId="model">
+              <Form.Label>Body Type</Form.Label>
               <Form.Control
-                value={manufacture_year}
-                onChange={(e) => setManufacture_year(e.target.value)}
+                value={body_type}
+                onChange={(e) => setBody_type(e.target.value)}
                 type="text"
                 required
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="registration_no">
-              <Form.Label>Registration Number</Form.Label>
+            {vehicle_type === "Truck" && (
+              <>
+                <Form.Group className="mb-3" controlId="model">
+                  <Form.Label>Axle Configuration</Form.Label>
+                  <Form.Control
+                    value={axle_configuration}
+                    onChange={(e) => setAxle_configuration(e.target.value)}
+                    type="text"
+                    required
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="model">
+                  <Form.Label>GVM</Form.Label>
+                  <Form.Control
+                    value={gvm}
+                    onChange={(e) => setGvm(e.target.value)}
+                    type="text"
+                    required
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="model">
+                  <Form.Label>Engine Power</Form.Label>
+                  <Form.Control
+                    value={engine_power}
+                    onChange={(e) => setEngine_power(e.target.value)}
+                    type="text"
+                    required
+                  />
+                </Form.Group>
+              </>
+            )}
+
+            <Form.Group className="mb-3" controlId="manufacture-year">
+              <Form.Label>Manufacturing Year</Form.Label>
               <Form.Control
-                value={registration_no}
-                onChange={(e) => setRegistration_no(e.target.value)}
+                value={manufacture_year}
+                onChange={(e) => setManufacture_year(e.target.value)}
                 type="text"
                 required
               />
@@ -271,15 +353,17 @@ export default function EditCarModel(props) {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="engine_capacity">
-              <Form.Label>Engine Capacity</Form.Label>
-              <Form.Control
-                value={engine_capacity}
-                onChange={(e) => setEngine_capacity(e.target.value)}
-                type="number"
-                required
-              />
-            </Form.Group>
+            {vehicle_type === "Car" && (
+              <Form.Group className="mb-3" controlId="engine_capacity">
+                <Form.Label>Engine Capacity</Form.Label>
+                <Form.Control
+                  value={engine_capacity}
+                  onChange={(e) => setEngine_capacity(e.target.value)}
+                  type="number"
+                  required
+                />
+              </Form.Group>
+            )}
 
             <Form.Group className="mb-3" controlId="transmission_type">
               <Form.Label>Transmission Type</Form.Label>
