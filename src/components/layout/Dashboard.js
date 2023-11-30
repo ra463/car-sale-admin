@@ -142,12 +142,12 @@ export default function Dashboard() {
                           : 0}
                         <sup style={{ fontSize: 20 }}></sup>
                       </h3>
-                      <p>Total Car's</p>
+                      <p>Total Vehicle's</p>
                     </div>
                     <div className="icon">
                       <FaCarSide />
                     </div>
-                    <Link to="/admin/cars" className="small-box-footer">
+                    <Link to="/admin/vehicles" className="small-box-footer">
                       More info {<FaArrowCircleRight />}
                     </Link>
                   </div>

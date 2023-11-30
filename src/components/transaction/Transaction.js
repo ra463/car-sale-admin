@@ -114,7 +114,16 @@ export default function Transaction() {
         ) : (
           <>
             <Card>
-              <Card.Header>
+              <Card.Header
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <span>
+                  Total Transaction's: <b>{filteredTransactionsCount}</b>
+                </span>
                 <div className="search-box float-end">
                   <InputGroup>
                     <Form.Control

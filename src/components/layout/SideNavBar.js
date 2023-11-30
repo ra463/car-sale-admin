@@ -17,27 +17,27 @@ const linkList = [
   },
   {
     icon: <HiUsers className="icon-md" />,
-    text: "User",
+    text: "Users",
     url: "/admin/users",
   },
   {
     icon: <FaCarSide className="icon-md" />,
-    text: "Car",
-    url: "/admin/cars",
+    text: "Vehicles",
+    url: "/admin/vehicles",
   },
   {
     icon: <RiHammerFill className="icon-md" />,
-    text: "Auction",
+    text: "Auctions",
     url: "/admin/auctions",
   },
   {
     icon: <BiDollar className="icon-md" />,
-    text: "Bid",
+    text: "Bids",
     url: "/admin/bids",
   },
   {
     icon: <GrTransaction className="icon-md" />,
-    text: "Transaction",
+    text: "Transactions",
     url: "/admin/transactions",
   },
   {
@@ -50,11 +50,11 @@ const linkList = [
 const active_text = {
   Dashboard: "dashboard",
   Category: "category",
-  User: "user",
-  Car: "car",
-  Auction: "auction",
-  Transaction: "transaction",
-  Bid: "bid",
+  Users: "user",
+  Vehicles: "vehicle",
+  Auctions: "auction",
+  Transactions: "transaction",
+  Bids: "bid",
   Queries: "queries",
 };
 
@@ -88,7 +88,10 @@ export default function SideNavbar({ isExpanded }) {
         >
           <div className="brand-link">
             {/* <img src={edwin_logo} alt="" width={"50px"} height="auto" /> */}
-            <Link to="/admin/dashboard" className="brand-text ms-2 font-weight-light">
+            <Link
+              to="/admin/dashboard"
+              className="brand-text ms-2 font-weight-light"
+            >
               Car Auction
             </Link>
           </div>

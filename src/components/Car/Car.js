@@ -42,7 +42,7 @@ export default function Cars() {
   const deleteUser = async (id) => {
     if (
       window.confirm(
-        "Are you sure you want to delete this Car?\n\nNote: All Related auctions will also be deleted."
+        "Are you sure you want to delete this Vehicle?\n\nNote: All Related auctions will also be deleted."
       ) === true
     ) {
       try {
@@ -114,13 +114,13 @@ export default function Cars() {
               }}
             >
               <span>
-                Total Cars: <b>{filteredCarCount}</b>
+                Total Vehicles: <b>{filteredCarCount}</b>
               </span>
               <div className="search-box float-end">
                 <InputGroup>
                   <Form.Control
                     aria-label="Search Input"
-                    placeholder="Search By Car Model"
+                    placeholder="Search By Vehicle Model"
                     type="search"
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
@@ -177,7 +177,7 @@ export default function Cars() {
                         <td>
                           <Button
                             onClick={() => {
-                              navigate(`/admin/view/car/${car._id}`);
+                              navigate(`/admin/view/vehicle/${car._id}`);
                             }}
                             type="success"
                             className="btn btn-primary"
@@ -199,7 +199,7 @@ export default function Cars() {
                   ) : (
                     <tr>
                       <td colSpan="8" className="text-center">
-                        No Car(s) Found
+                        No Vehicles(s) Found
                       </td>
                     </tr>
                   )}

@@ -172,7 +172,7 @@ export default function EditCarModel(props) {
     >
       <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter">
-          Edit Car Detail(s)
+          Edit Vehicle Detail(s)
         </Modal.Title>
       </Modal.Header>
       <Form onSubmit={submitHandler}>
