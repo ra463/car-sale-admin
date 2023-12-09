@@ -79,7 +79,7 @@ const ViewAuction = () => {
                       <strong>Auction ID</strong>
                     </p>
                     <p style={{ color: "orange" }}>
-                      #{loading ? <Skeleton /> : auction?._id}
+                      #{loading ? <Skeleton /> : auction?.auction_id}
                     </p>
                   </Col>
                   <Col md={4}>

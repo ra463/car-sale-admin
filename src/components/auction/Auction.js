@@ -157,7 +157,9 @@ export default function Auction() {
                     auctions.map((auction, i) => (
                       <tr key={auction?._id} className="odd">
                         <td className="text-center">{skip + i + 1}</td>
-                        <td style={{ color: "orange" }}>#{auction?._id}</td>
+                        <td style={{ color: "orange" }}>
+                          #{auction?.auction_id}
+                        </td>
                         <td>{auction?.seller?.name}</td>
                         <td>{getDateTime(auction?.auction_start)}</td>
                         <td>{getDateTime(auction?.auction_end)}</td>
