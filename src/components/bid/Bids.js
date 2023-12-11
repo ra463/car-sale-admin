@@ -166,7 +166,7 @@ export default function Bid() {
                             style={{ color: "orange" }}
                             to={`/admin/view/auction/${bid?.auction}`}
                           >
-                            #{bid?.auction}
+                            #{bid?.auction.auction_id}
                           </Link>
                         </td>
                         <td>{bid?.bid_amount}</td>
