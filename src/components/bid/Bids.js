@@ -164,7 +164,7 @@ export default function Bid() {
                         <td>
                           <Link
                             style={{ color: "orange" }}
-                            to={`/admin/view/auction/${bid?.auction}`}
+                            to={`/admin/view/auction/${bid?.auction._id}`}
                           >
                             #{bid?.auction.auction_id}
                           </Link>
