@@ -340,7 +340,13 @@ const ViewCar = () => {
                   {loading ? <Skeleton /> : `${car?.model}`} - Description
                 </Card.Title>
               </Card.Header>
-              <Card.Body>{car?.description}</Card.Body>
+              <Card.Body
+                style={{
+                  whiteSpace: "pre-wrap",
+                }}
+              >
+                {car?.description}
+              </Card.Body>
             </Card>
 
             {/* <Card
