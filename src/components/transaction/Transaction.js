@@ -129,7 +129,7 @@ export default function Transaction() {
                     </Form.Group>
                   </div>
                   <span>
-                    Total Transaction's: <b>{filteredTransactionsCount}</b>
+                    Total Transactions: <b>{filteredTransactionsCount}</b>
                   </span>
                 </div>
                 <div className="search-box float-end">

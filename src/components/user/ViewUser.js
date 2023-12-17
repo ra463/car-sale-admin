@@ -156,7 +156,7 @@ const ViewUser = () => {
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
-                      <strong>Shuburb</strong>
+                      <strong>Suburb</strong>
                     </p>
                     <p>{loading ? <Skeleton /> : user?.shuburb}</p>
                   </Col>

@@ -305,7 +305,7 @@ const ViewTransaction = () => {
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
-                      <strong>Car Shuburb</strong>
+                      <strong>Car Suburb</strong>
                     </p>
                     <p>
                       {loading ? (

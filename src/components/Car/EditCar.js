@@ -434,7 +434,7 @@ export default function EditCarModel(props) {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="car_street">
-              <Form.Label>Car Location - Shuburb</Form.Label>
+              <Form.Label>Car Location - Suburb</Form.Label>
               <Form.Control
                 value={car_shuburb}
                 onChange={(e) => setCar_shuburb(e.target.value)}

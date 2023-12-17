@@ -172,7 +172,15 @@ const ViewCar = () => {
                     <p className="mb-0">
                       <strong>Body Type</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : car?.body_type}</p>
+                    <p>
+                      {loading ? (
+                        <Skeleton />
+                      ) : car?.body_type ? (
+                        car?.body_type
+                      ) : (
+                        "N/A"
+                      )}
+                    </p>
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
@@ -180,14 +188,13 @@ const ViewCar = () => {
                     </p>
                     <p>{loading ? <Skeleton /> : car?.fuel_type}</p>
                   </Col>
-                  {car?.transmission_type && (
-                    <Col md={4}>
-                      <p className="mb-0">
-                        <strong>Transmission Type</strong>
-                      </p>
-                      <p>{loading ? <Skeleton /> : car?.transmission_type}</p>
-                    </Col>
-                  )}
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Transmission Type</strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : car?.transmission_type}</p>
+                  </Col>
+
                   {car?.vehicle_type === "Car"
                     ? car?.engine_capacity && (
                         <Col md={4}>
@@ -215,13 +222,29 @@ const ViewCar = () => {
                     <p className="mb-0">
                       <strong>Drive Type</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : car?.drive_type}</p>
+                    <p>
+                      {loading ? (
+                        <Skeleton />
+                      ) : car?.drive_type ? (
+                        car?.drive_type
+                      ) : (
+                        "N/A"
+                      )}
+                    </p>
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
                       <strong>Number Of Cylinder's</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : car?.num_of_cylinders}</p>
+                    <p>
+                      {loading ? (
+                        <Skeleton />
+                      ) : car?.num_of_cylinders ? (
+                        car?.num_of_cylinders
+                      ) : (
+                        "N/A"
+                      )}
+                    </p>
                   </Col>
                   {car?.vehicle_type === "Truck" && (
                     <>
@@ -244,7 +267,7 @@ const ViewCar = () => {
                   {car?.car_shuburb && (
                     <Col md={4}>
                       <p className="mb-0">
-                        <strong>Car Shuburb</strong>
+                        <strong>Car Suburb</strong>
                       </p>
                       <p>{loading ? <Skeleton /> : car?.car_shuburb}</p>
                     </Col>

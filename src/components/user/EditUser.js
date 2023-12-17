@@ -206,7 +206,7 @@ export default function EditUserModel(props) {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="address">
-              <Form.Label>Shuburb</Form.Label>
+              <Form.Label>Suburb</Form.Label>
               <Form.Control
                 type="text"
                 value={shuburb}

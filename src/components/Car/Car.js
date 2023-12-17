@@ -221,7 +221,7 @@ export default function Cars() {
                             <b>No Image</b>
                           )}
                         </td>
-                        <td>{car?.color}</td>
+                        <td>{car?.color ? car?.color : "N/A"}</td>
                         <td>{getDateTime(car?.createdAt && car?.createdAt)}</td>
                         <td>
                           <Button
