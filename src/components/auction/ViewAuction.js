@@ -448,7 +448,14 @@ const ViewAuction = () => {
                   }}
                 >
                   <Card.Title>
-                    {loading ? <Skeleton /> : "Auction Winner"} - Details
+                    {loading ? (
+                      <Skeleton />
+                    ) : auction?.status === "sold" ? (
+                      "Auction Winner"
+                    ) : (
+                      "Bid Winner"
+                    )}{" "}
+                    - Details
                   </Card.Title>
                 </Card.Header>
                 <Card.Body
