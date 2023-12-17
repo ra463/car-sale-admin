@@ -17,6 +17,7 @@ import axiosInstance from "../../utils/axiosUtil";
 import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
 import CustomSkeleton from "../layout/CustomSkeleton";
+import { getError } from "../../utils/error";
 
 export default function Cars() {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ export default function Cars() {
     }
   );
 
-  const deleteUser = async (id) => {
+  const deleteCar = async (id) => {
     if (
       window.confirm(
         "Are you sure you want to delete this Vehicle?\n\nNote: All Related auctions will also be deleted."
@@ -56,7 +57,7 @@ export default function Cars() {
           position: toast.POSITION.TOP_CENTER,
         });
       } catch (error) {
-        toast.error(error.response.data.message, {
+        toast.error(getError(error), {
           position: toast.POSITION.TOP_CENTER,
         });
       }
@@ -235,7 +236,7 @@ export default function Cars() {
                           </Button>
                           <Button
                             onClick={() => {
-                              deleteUser(car._id);
+                              deleteCar(car._id);
                             }}
                             type="danger"
                             className="btn btn-danger ms-2"

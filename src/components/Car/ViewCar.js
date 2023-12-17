@@ -138,7 +138,9 @@ const ViewCar = () => {
                     <p className="mb-0">
                       <strong>Colour</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : car?.color}</p>
+                    <p>
+                      {loading ? <Skeleton /> : car?.color ? car?.color : "N/A"}
+                    </p>
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
