@@ -32,4 +32,18 @@ const viewUserReducer = (state, action) => {
   }
 };
 
-export { userReducer, viewUserReducer };
+const unlockUserReducer = (state, action) => {
+  switch (action.type) {
+    case "UNLOCK_REQUEST":
+      return { ...state, loading: true };
+    case "UNLOCK_SUCCESS":
+      return { ...state, loading: false };
+    case "UNLOCK_FAIL":
+      return { ...state, loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export { userReducer, viewUserReducer, unlockUserReducer };

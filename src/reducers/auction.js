@@ -28,6 +28,7 @@ const viewAuctionReducer = (state, action) => {
         loading: false,
         auction: action.payload.auction,
         bids: action.payload.bids,
+        winner: action.payload.winner,
       };
     case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
@@ -37,4 +38,17 @@ const viewAuctionReducer = (state, action) => {
   }
 };
 
-export { auctionReducer, viewAuctionReducer };
+const refundReducer = (state, action) => {
+  switch (action.type) {
+    case "REFUND_REQUEST":
+      return { ...state, loading: true };
+    case "REFUND_SUCCESS":
+      return { ...state, loading: false };
+    case "REFUND_FAIL":
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export { auctionReducer, viewAuctionReducer, refundReducer };

@@ -1,11 +1,11 @@
+/* eslint-disable eqeqeq */
 import React, { useEffect, useReducer, useContext, useState } from "react";
 import { Store } from "../../Store";
 import { getError } from "../../utils/error";
 import { editReducer as reducer } from "../../reducers/commonReducer";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { Modal, Form, Button, Container } from "react-bootstrap";
-import LoadingBox from "../layout/LoadingBox";
+import { Modal, Form, Button, Container, Spinner } from "react-bootstrap";
 import axiosInstance from "../../utils/axiosUtil";
 
 export default function EditCarModel(props) {
@@ -43,6 +43,7 @@ export default function EditCarModel(props) {
   const [body_type, setBody_type] = useState("");
   const [axle_configuration, setAxle_configuration] = useState("");
   const [gvm, setGvm] = useState();
+  const [car_shuburb, setCar_shuburb] = useState("");
   const [engine_power, setEngine_power] = useState();
 
   const resetForm = () => {
@@ -70,6 +71,7 @@ export default function EditCarModel(props) {
     setAxle_configuration("");
     setGvm();
     setEngine_power();
+    setCar_shuburb("");
   };
   useEffect(() => {
     const fetchData = async () => {
@@ -103,6 +105,7 @@ export default function EditCarModel(props) {
         setOwner(car.owner);
         setAutorized_person(car.autorized_person);
         setBody_type(car.body_type);
+        setCar_shuburb(car.car_shuburb);
         car.axle_configuration && setAxle_configuration(car.axle_configuration);
         car.gvm && setGvm(car.gvm);
         car.engine_power && setEngine_power(car.engine_power);
@@ -154,6 +157,7 @@ export default function EditCarModel(props) {
           car_state,
           car_postal_code,
           is_registered,
+          car_shuburb,
         },
         {
           headers: {
@@ -409,19 +413,8 @@ export default function EditCarModel(props) {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="car_street">
-              <Form.Label>Car Location Address</Form.Label>
-              <Form.Control
-                value={car_address}
-                onChange={(e) => setCar_address(e.target.value)}
-                type="text"
-                required
-                as="textarea"
-              />
-            </Form.Group>
-
             <Form.Group className="mb-3" controlId="car_city">
-              <Form.Label>Car Location City</Form.Label>
+              <Form.Label>Car Location - City</Form.Label>
               <Form.Control
                 value={car_city}
                 onChange={(e) => setCar_city(e.target.value)}
@@ -431,7 +424,7 @@ export default function EditCarModel(props) {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="car_city">
-              <Form.Label>Car Location State</Form.Label>
+              <Form.Label>Car Location - State</Form.Label>
               <Form.Control
                 value={car_state}
                 onChange={(e) => setCar_state(e.target.value)}
@@ -440,13 +433,35 @@ export default function EditCarModel(props) {
               />
             </Form.Group>
 
+            <Form.Group className="mb-3" controlId="car_street">
+              <Form.Label>Car Location - Shuburb</Form.Label>
+              <Form.Control
+                value={car_shuburb}
+                onChange={(e) => setCar_shuburb(e.target.value)}
+                type="text"
+                required
+                as="textarea"
+              />
+            </Form.Group>
+
             <Form.Group className="mb-3" controlId="car_landmark">
-              <Form.Label>Car Location Pincode</Form.Label>
+              <Form.Label>Car Location - Pincode</Form.Label>
               <Form.Control
                 value={car_postal_code}
                 onChange={(e) => setCar_postal_code(e.target.value)}
                 type="number"
                 required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="car_street">
+              <Form.Label>Car Location - Address</Form.Label>
+              <Form.Control
+                value={car_address}
+                onChange={(e) => setCar_address(e.target.value)}
+                type="text"
+                required
+                as="textarea"
               />
             </Form.Group>
 
@@ -473,9 +488,12 @@ export default function EditCarModel(props) {
             type="submit"
             disabled={loadingUpdate ? true : false}
           >
-            Submit
+            {loadingUpdate ? (
+              <Spinner animation="border" size="sm" />
+            ) : (
+              "Submit"
+            )}
           </Button>
-          {loadingUpdate && <LoadingBox></LoadingBox>}
         </Modal.Footer>
       </Form>
     </Modal>

@@ -24,6 +24,7 @@ export default function Cars() {
   const { token } = state;
 
   const [curPage, setCurPage] = useState(1);
+  const [status, setStatus] = useState("all");
   const [resultPerPage, setResultPerPage] = useState(10);
   const [searchInput, setSearchInput] = useState("");
   const [query, setQuery] = useState("");
@@ -67,7 +68,7 @@ export default function Cars() {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const res = await axiosInstance.get(
-          `/api/admin/getallcars/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+          `/api/admin/getallcars/?vehicle_type=${status}&keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
           {
             headers: { Authorization: token },
           }
@@ -84,7 +85,7 @@ export default function Cars() {
       }
     };
     fetchData();
-  }, [token, del, curPage, resultPerPage, query]);
+  }, [token, del, curPage, status, resultPerPage, query]);
 
   const numOfPages = Math.ceil(filteredCarCount / resultPerPage);
   const skip = resultPerPage * (curPage - 1);
@@ -111,11 +112,47 @@ export default function Cars() {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
+                flexWrap: "wrap",
+                gap: "10px",
               }}
             >
-              <span>
-                Total Vehicles: <b>{filteredCarCount}</b>
-              </span>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  flexWrap: "wrap",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <p className="p-bold m-0 me-3 filter-title">
+                    Filter by Vehicle Type
+                  </p>
+                  <Form.Group controlId="status">
+                    <Form.Select
+                      value={status}
+                      onChange={(e) => {
+                        setStatus(e.target.value);
+                        setCurPage(1);
+                      }}
+                      aria-label="Default select example"
+                    >
+                      <option value="all">All</option>
+                      <option value="Car">Light Vehicle</option>
+                      <option value="Truck">Heavy Vehicle</option>
+                    </Form.Select>
+                  </Form.Group>
+                </div>
+                <span>
+                  Total Vehicles: <b>{filteredCarCount}</b>
+                </span>
+              </div>
+
               <div className="search-box float-end">
                 <InputGroup>
                   <Form.Control
@@ -163,11 +200,11 @@ export default function Cars() {
                         <td>
                           {car?.vehicle_type === "Car" ? (
                             <span className="text-secondary">
-                              <b>{car?.vehicle_type}</b>
+                              <b>Light Vehicle</b>
                             </span>
                           ) : (
                             <span className="text-warning">
-                              <b>{car?.vehicle_type}</b>
+                              <b>Heavy Vehicle</b>
                             </span>
                           )}
                         </td>

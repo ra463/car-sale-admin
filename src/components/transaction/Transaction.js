@@ -14,10 +14,9 @@ import {
 } from "react-bootstrap";
 import CustomPagination from "../layout/CustomPagination";
 import axiosInstance from "../../utils/axiosUtil";
-import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
+import { FaEye, FaSearch } from "react-icons/fa";
 import { motion } from "framer-motion";
 import CustomSkeleton from "../layout/CustomSkeleton";
-import LoadingBox from "../layout/LoadingBox";
 import { getTransactionReducer } from "../../reducers/transaction.js";
 
 export default function Transaction() {
@@ -26,55 +25,27 @@ export default function Transaction() {
   const { token } = state;
 
   const [curPage, setCurPage] = useState(1);
+  const [status, setStatus] = useState("all");
   const [resultPerPage, setResultPerPage] = useState(10);
   const [searchInput, setSearchInput] = useState("");
   const [query, setQuery] = useState("");
-  const [del, setDel] = useState(false);
 
   const curPageHandler = (p) => setCurPage(p);
 
   const [
-    { deleteLoading, loading, error, transactions, filteredTransactionsCount },
+    { loading, error, transactions, filteredTransactionsCount },
     dispatch,
   ] = useReducer(getTransactionReducer, {
     loading: true,
     error: "",
   });
 
-  const deleteTransaction = async (id) => {
-    if (
-      window.confirm(
-        "Are you sure you want to delete this Transaction?\n\nNote: All Related details like TransactionId and all other things will also be deleted Permanently."
-      ) === true
-    ) {
-      try {
-        setDel(true);
-        const res = await axiosInstance.delete(
-          `/api/admin/delete-transaction/${id}`,
-          {
-            headers: { Authorization: token },
-          }
-        );
-        setDel(false);
-        if (res.data) {
-          toast.success("Transaction Deleted Succesfully", {
-            position: toast.POSITION.TOP_CENTER,
-          });
-        }
-      } catch (error) {
-        toast.error(getError(error), {
-          position: toast.POSITION.TOP_CENTER,
-        });
-      }
-    }
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const res = await axiosInstance.get(
-          `/api/admin/get-all-transaction/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+          `/api/admin/get-all-transaction/?status=${status}&keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
           {
             headers: { Authorization: token },
           }
@@ -91,7 +62,7 @@ export default function Transaction() {
       }
     };
     fetchData();
-  }, [token, del, curPage, resultPerPage, query]);
+  }, [token, curPage, status, resultPerPage, query]);
 
   const numOfPages = Math.ceil(filteredTransactionsCount / resultPerPage);
   const skip = resultPerPage * (curPage - 1);
@@ -119,16 +90,53 @@ export default function Transaction() {
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: "10px",
                 }}
               >
-                <span>
-                  Total Transaction's: <b>{filteredTransactionsCount}</b>
-                </span>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <p className="p-bold m-0 me-3 filter-title">
+                      Filter by Status
+                    </p>
+                    <Form.Group controlId="status">
+                      <Form.Select
+                        value={status}
+                        onChange={(e) => {
+                          setStatus(e.target.value);
+                          setCurPage(1);
+                        }}
+                        aria-label="Default select example"
+                      >
+                        <option value="all">All</option>
+                        <option value="PENDING">Pending</option>
+                        <option value="COMPLETED">Completed</option>
+                        <option value="REFUNDED">Refunded</option>
+                        <option value="CANCELLED">Cancelled</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </div>
+                  <span>
+                    Total Transaction's: <b>{filteredTransactionsCount}</b>
+                  </span>
+                </div>
                 <div className="search-box float-end">
                   <InputGroup>
                     <Form.Control
                       aria-label="Search Input"
-                      placeholder="Search"
+                      placeholder="Search By Transaction Id"
                       type="search"
                       value={searchInput}
                       onChange={(e) => setSearchInput(e.target.value)}
@@ -198,20 +206,6 @@ export default function Transaction() {
                               className="btn btn-primary"
                             >
                               <FaEye />
-                            </Button>
-                            <Button
-                              disabled={loading ? true : false}
-                              onClick={() => {
-                                deleteTransaction(transaction._id);
-                              }}
-                              type="danger"
-                              className="btn btn-danger ms-2"
-                            >
-                              {deleteLoading ? (
-                                <LoadingBox></LoadingBox>
-                              ) : (
-                                <FaTrashAlt className="m-auto" />
-                              )}
                             </Button>
                           </td>
                         </tr>

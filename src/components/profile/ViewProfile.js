@@ -46,7 +46,7 @@ const ViewProfile = () => {
 
   const getDateTime = (dt) => {
     const dT = dt.split(".")[0].split("T");
-    return `${dT[0]} ${dT[1]}`;
+    return `${dT[0]} || ${dT[1]}`;
   };
 
   return (
@@ -95,6 +95,36 @@ const ViewProfile = () => {
                     <span className="badge bg-success">{user?.role}</span>
                   </p>
                 </Col>
+                <Col md={4}>
+                    <p className="mb-0">
+                      <strong>City</strong>
+                    </p>
+                    <p>{user.city}</p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Shuburb</strong>
+                    </p>
+                    <p>{user.shuburb}</p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>State</strong>
+                    </p>
+                    <p>{user.state}</p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Pin Code</strong>
+                    </p>
+                    <p>{user.postal_code}</p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Address</strong>
+                    </p>
+                    <p>{user.address}</p>
+                  </Col>
                 <Col md={4}>
                   <p className="mb-0">
                     <strong>Created At</strong>

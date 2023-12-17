@@ -24,6 +24,7 @@ export default function Auction() {
   const { token } = state;
 
   const [curPage, setCurPage] = useState(1);
+  const [status, setStatus] = useState("all");
   const [resultPerPage, setResultPerPage] = useState(10);
   const [searchInput, setSearchInput] = useState("");
   const [query, setQuery] = useState("");
@@ -65,7 +66,7 @@ export default function Auction() {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const res = await axiosInstance.get(
-          `/api/admin/getalauctions/?keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+          `/api/admin/getalauctions/?status=${status}&keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
           {
             headers: { Authorization: token },
           }
@@ -83,7 +84,7 @@ export default function Auction() {
       }
     };
     fetchData();
-  }, [token, del, curPage, resultPerPage, query]);
+  }, [token, del, curPage, status, resultPerPage, query]);
 
   const numOfPages = Math.ceil(filteredAuctionCount / resultPerPage);
   const skip = resultPerPage * (curPage - 1);
@@ -110,16 +111,55 @@ export default function Auction() {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
+                flexWrap: "wrap",
+                gap: "10px",
               }}
             >
-              <span>
-                Total Auctions: <b>{filteredAuctionCount}</b>
-              </span>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  flexWrap: "wrap",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <p className="p-bold m-0 me-3 filter-title">
+                    Filter by Status
+                  </p>
+                  <Form.Group controlId="status">
+                    <Form.Select
+                      value={status}
+                      onChange={(e) => {
+                        setStatus(e.target.value);
+                        setCurPage(1);
+                      }}
+                      aria-label="Default select example"
+                    >
+                      <option value="all">All</option>
+                      <option value="active">Active</option>
+                      <option value="inactive">Inactive</option>
+                      <option value="closed">Closed</option>
+                      <option value="refunded">Refunded</option>
+                      <option value="sold">Sold</option>
+                    </Form.Select>
+                  </Form.Group>
+                </div>
+                <span>
+                  Total Auctions: <b>{filteredAuctionCount}</b>
+                </span>
+              </div>
+
               <div className="search-box float-end">
                 <InputGroup>
                   <Form.Control
                     aria-label="Search Input"
-                    placeholder="Search By Auction Status"
+                    placeholder="Search By Auction Id"
                     type="search"
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
@@ -209,8 +249,8 @@ export default function Auction() {
                     ))
                   ) : (
                     <tr>
-                      <td>
-                        <b>No Auctions Found</b>
+                      <td colSpan="8" className="text-center">
+                        No Auction(s) Found
                       </td>
                     </tr>
                   )}

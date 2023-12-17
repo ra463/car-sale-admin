@@ -1,10 +1,21 @@
 import React, { useEffect, useReducer, useContext } from "react";
 import { Store } from "../../Store";
 import { getError } from "../../utils/error";
-import { viewAuctionReducer as reducer } from "../../reducers/auction";
+import {
+  viewAuctionReducer as reducer,
+  refundReducer,
+} from "../../reducers/auction";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { Card, Col, Container, Row, Table } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Row,
+  Spinner,
+  Table,
+} from "react-bootstrap";
 import MessageBox from "../layout/MessageBox";
 import axiosInstance from "../../utils/axiosUtil";
 import Skeleton from "react-loading-skeleton";
@@ -15,8 +26,16 @@ const ViewAuction = () => {
   const { token } = state;
   const { id } = useParams();
 
-  const [{ loading, error, auction, bids }, dispatch] = useReducer(reducer, {
-    loading: true,
+  const [{ loading, error, auction, bids, winner }, dispatch] = useReducer(
+    reducer,
+    {
+      loading: true,
+      error: "",
+    }
+  );
+
+  const [{ loading: refundLoading }, dispatch1] = useReducer(refundReducer, {
+    loading: false,
     error: "",
   });
 
@@ -38,12 +57,48 @@ const ViewAuction = () => {
           payload: getError(err),
         });
         toast.error(getError(err), {
-          position: toast.POSITION.BOTTOM_CENTER,
+          position: toast.POSITION.TOP_CENTER,
         });
       }
     };
     fetchData();
   }, [id, token]);
+
+  const handleRefund = async () => {
+    if (
+      window.confirm(
+        "Are you sure you want to refund the amount to the seller/winner? By Doing this, the same amount which seller/winner has paid to you will be Refunded to seller/winner.\n\n-->The other user which didn't Paid the amount will be locked untill You(Admin) himself unlock the User.<--\n\nNote: This action cannot be undone. And The amount will be directly debited from your's linked PayPal account.\n\nThe Amount will be refunded to the user within 1-2 hours and user will be notified via Email. After Refunding the amount to the seller/winner, you will not be able to refund the amount again.\n\nAlso the status of the Auction will be changed to 'Refunded'. You should know the consequences before you Proceed further.\n\nClick OK to proceed."
+      ) === true
+    ) {
+      try {
+        dispatch1({ type: "REFUND_REQUEST" });
+        const { data } = await axiosInstance.post(
+          `/api/admin/refund-payment`,
+          { auctionId: id },
+          {
+            headers: { Authorization: token },
+          }
+        );
+        if (data) {
+          dispatch1({ type: "REFUND_SUCCESS" });
+          toast.success("Refund Initiated Successfully", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000);
+        }
+      } catch (err) {
+        dispatch1({
+          type: "REFUND_FAIL",
+        });
+        toast.error(err.response.data.message, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
+    }
+  };
 
   const getTime = (dt) => {
     const dT = dt.split(".")[0].split("T");
@@ -52,6 +107,11 @@ const ViewAuction = () => {
   const getDate = (dt) => {
     const dT = dt.split(".")[0].split("T");
     return dT[0];
+  };
+
+  const getDateTime = (dt) => {
+    const dT = dt.split(".")[0].split("T");
+    return `${dT[0]} || ${dT[1]}`;
   };
 
   return (
@@ -81,12 +141,6 @@ const ViewAuction = () => {
                     <p style={{ color: "orange" }}>
                       #{loading ? <Skeleton /> : auction?.auction_id}
                     </p>
-                  </Col>
-                  <Col md={4}>
-                    <p className="mb-0">
-                      <strong>Auction Created By</strong>
-                    </p>
-                    <p>{loading ? <Skeleton /> : auction?.seller.name}</p>
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
@@ -127,13 +181,117 @@ const ViewAuction = () => {
                     <p>
                       {loading ? (
                         <Skeleton />
-                      ) : auction?.show_hide_price == 0 ? (
+                      ) : auction?.show_hide_price === false ? (
                         "Not Visible"
                       ) : (
                         "Visible"
                       )}
                     </p>
                   </Col>
+                  {auction?.auction_confirmed === true && (
+                    <>
+                      <Col md={4}>
+                        <p className="mb-0">
+                          <strong>Is Seller Paid 10% Amount?</strong>
+                        </p>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "flex-start",
+                            gap: "10px",
+                          }}
+                        >
+                          <p>
+                            {loading ? (
+                              <Skeleton />
+                            ) : auction?.is_Seller_paid10_percent === true ? (
+                              <span className="badge bg-success">Paid</span>
+                            ) : (
+                              <span className="badge bg-warning">No</span>
+                            )}
+                          </p>
+                          {auction?.is_Seller_paid10_percent === true &&
+                            auction?.is_Winner_paid10_percent === false && (
+                              <Button
+                                onClick={handleRefund}
+                                style={{
+                                  fontSize: "13px",
+                                  padding: "3px 10px",
+                                  borderRadius: "7px",
+                                  marginTop: "1px",
+                                  minWidth: "32vh",
+                                }}
+                              >
+                                {refundLoading ? (
+                                  <span
+                                    style={{
+                                      display: "flex",
+                                      gap: "5px",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    Processing...
+                                    <Spinner animation="border" size="sm" />
+                                  </span>
+                                ) : (
+                                  "Refund Amount To Seller"
+                                )}
+                              </Button>
+                            )}
+                        </div>
+                      </Col>
+                      <Col md={4}>
+                        <p className="mb-0">
+                          <strong>Is Winner Paid 10% Amount?</strong>
+                        </p>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "flex-start",
+                            gap: "10px",
+                          }}
+                        >
+                          <p>
+                            {loading ? (
+                              <Skeleton />
+                            ) : auction?.is_Winner_paid10_percent === true ? (
+                              <span className="badge bg-success">Paid</span>
+                            ) : (
+                              <span className="badge bg-warning">No</span>
+                            )}
+                          </p>
+                          {auction?.is_Seller_paid10_percent === false &&
+                            auction?.is_Winner_paid10_percent === true && (
+                              <Button
+                                onClick={handleRefund}
+                                style={{
+                                  fontSize: "13px",
+                                  padding: "3px 10px",
+                                  borderRadius: "7px",
+                                  marginTop: "1px",
+                                  minWidth: "32vh",
+                                }}
+                              >
+                                {refundLoading ? (
+                                  <span
+                                    style={{
+                                      display: "flex",
+                                      gap: "5px",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    Processing...
+                                    <Spinner animation="border" size="sm" />
+                                  </span>
+                                ) : (
+                                  "Refund Amount To Winner"
+                                )}
+                              </Button>
+                            )}
+                        </div>
+                      </Col>
+                    </>
+                  )}
                   <Col md={4}>
                     <p className="mb-0">
                       <strong>Bidding Status</strong>
@@ -176,6 +334,22 @@ const ViewAuction = () => {
                       )}
                     </p>
                   </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Created At</strong>
+                    </p>
+                    <p>
+                      {loading ? <Skeleton /> : getDateTime(auction.createdAt)}
+                    </p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Last Update</strong>
+                    </p>
+                    <p>
+                      {loading ? <Skeleton /> : getDateTime(auction.updatedAt)}
+                    </p>
+                  </Col>
                 </Row>
               </Card.Body>
             </Card>
@@ -185,15 +359,179 @@ const ViewAuction = () => {
                 marginTop: "1rem",
               }}
             >
-              <Card.Header
+              <Card.Header>
+                <Card.Title>
+                  {loading ? <Skeleton /> : "Auctioneer"} - Details
+                </Card.Title>
+              </Card.Header>
+              <Card.Body>
+                <Row>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Auctioneer ID</strong>
+                    </p>
+                    <p style={{ color: "orange" }}>
+                      {loading ? <Skeleton /> : `#${auction?.seller.clientId}`}
+                    </p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Auctioneer Name</strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : auction?.seller.name}</p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Auctioneer Email</strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : auction?.seller.email}</p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Auctioneer Phone No.</strong>
+                    </p>
+                    <p>
+                      {loading ? <Skeleton /> : auction?.seller.phoneNumber}
+                    </p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Auctioneer Age</strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : auction?.seller.age}</p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Auctioneer City</strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : auction?.seller.city}</p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Auctioneer Suburb</strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : auction?.seller.shuburb}</p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Auctioneer State</strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : auction?.seller.state}</p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Auctioneer Postal Code</strong>
+                    </p>
+                    <p>
+                      {loading ? <Skeleton /> : auction?.seller.postal_code}
+                    </p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Auctioneer Address</strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : auction?.seller.address}</p>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+
+            {auction?.auction_confirmed === true && (
+              <Card
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  marginTop: "1rem",
                 }}
               >
+                <Card.Header
+                  style={{
+                    background: "gold",
+                  }}
+                >
+                  <Card.Title>
+                    {loading ? <Skeleton /> : "Auction Winner"} - Details
+                  </Card.Title>
+                </Card.Header>
+                <Card.Body
+                  style={{
+                    background: "lightyellow",
+                  }}
+                >
+                  <Row>
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>User ID</strong>
+                      </p>
+                      <p style={{ color: "orange" }}>
+                        {loading ? <Skeleton /> : `#${winner?.clientId}`}
+                      </p>
+                    </Col>
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>User - Full Name</strong>
+                      </p>
+                      <p>{loading ? <Skeleton /> : winner?.name}</p>
+                    </Col>
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>User - Email</strong>
+                      </p>
+                      <p>{loading ? <Skeleton /> : winner?.email}</p>
+                    </Col>
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>User - Phone No.</strong>
+                      </p>
+                      <p>{loading ? <Skeleton /> : winner?.phoneNumber}</p>
+                    </Col>
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>User - Age</strong>
+                      </p>
+                      <p>{loading ? <Skeleton /> : winner?.age}</p>
+                    </Col>
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>User - City</strong>
+                      </p>
+                      <p>{loading ? <Skeleton /> : winner?.city}</p>
+                    </Col>
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>User - Suburb</strong>
+                      </p>
+                      <p>{loading ? <Skeleton /> : winner?.shuburb}</p>
+                    </Col>
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>User - State</strong>
+                      </p>
+                      <p>{loading ? <Skeleton /> : winner?.state}</p>
+                    </Col>
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>User - Postal Code</strong>
+                      </p>
+                      <p>{loading ? <Skeleton /> : winner?.postal_code}</p>
+                    </Col>
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>User - Address</strong>
+                      </p>
+                      <p>{loading ? <Skeleton /> : winner.address}</p>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            )}
+
+            <Card
+              style={{
+                marginTop: "1rem",
+              }}
+            >
+              <Card.Header>
                 <Card.Title>
-                  {loading ? <Skeleton /> : "Auctioned Car"} - Detail(s)
+                  {loading ? <Skeleton /> : "Auctioned Vehicle"} - Detail(s)
                 </Card.Title>
               </Card.Header>
               <Card.Body>
@@ -265,10 +603,20 @@ const ViewAuction = () => {
                   {auction?.car?.engine_capacity && (
                     <Col md={4}>
                       <p className="mb-0">
-                        <strong>Engine Capacity(in cc)</strong>
+                        <strong>Engine Capacity</strong>
                       </p>
                       <p>
                         {loading ? <Skeleton /> : auction?.car?.engine_capacity}
+                      </p>
+                    </Col>
+                  )}
+                  {auction?.car?.engine_power && (
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>Engine Power</strong>
+                      </p>
+                      <p>
+                        {loading ? <Skeleton /> : auction?.car?.engine_power}
                       </p>
                     </Col>
                   )}
@@ -294,7 +642,39 @@ const ViewAuction = () => {
                       {loading ? <Skeleton /> : auction?.car?.num_of_cylinders}
                     </p>
                   </Col>
-                  <Col md={12}>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Car City</strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : auction?.car?.car_city}</p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Car State</strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : auction?.car?.car_state}</p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Car Shuburb</strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : auction?.car?.car_shuburb}</p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Car Post Code</strong>
+                    </p>
+                    <p>
+                      {loading ? <Skeleton /> : auction?.car?.car_postal_code}
+                    </p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Car Address</strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : auction?.car?.car_address}</p>
+                  </Col>
+                  {/* <Col md={12}>
                     <p className="mb-0">
                       <strong>Car Image(s)</strong>
                     </p>
@@ -315,7 +695,7 @@ const ViewAuction = () => {
                         "No Image(s)"
                       )}
                     </p>
-                  </Col>
+                  </Col> */}
                 </Row>
               </Card.Body>
             </Card>

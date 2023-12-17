@@ -9,13 +9,16 @@ import { Modal, Form, Button, Container, Spinner } from "react-bootstrap";
 export default function UpdateProfileModel(props) {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { token, userInfo } = state;
-  
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("");
   const [address, setAddress] = useState("");
   const [age, setAge] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [city, setCity] = useState("");
+  const [states, setState] = useState("");
+  const [shuburb, setShuburb] = useState("");
+  const [postal_code, setPostal_code] = useState();
 
   const [{ error, loadingUpdate }, dispatch] = useReducer(reducer, {
     loading: true,
@@ -36,9 +39,12 @@ export default function UpdateProfileModel(props) {
         setName(user.name);
         setEmail(user.email);
         setPhoneNumber(user.phoneNumber);
-        setRole(user.role);
         setAddress(user.address);
         setAge(user.age);
+        setCity(user.city);
+        setState(user.state);
+        setShuburb(user.shuburb);
+        setPostal_code(user.postal_code);
 
         dispatch({ type: "FETCH_SUCCESS" });
       } catch (err) {
@@ -58,6 +64,12 @@ export default function UpdateProfileModel(props) {
     setName("");
     setEmail("");
     setPhoneNumber("");
+    setAddress("");
+    setAge("");
+    setCity("");
+    setState("");
+    setShuburb("");
+    setPostal_code();
   };
 
   const submitHandler = async (e) => {
@@ -71,10 +83,13 @@ export default function UpdateProfileModel(props) {
         {
           name,
           email,
-          role,
           age,
           phoneNumber,
           address,
+          city,
+          state: states,
+          postal_code,
+          shuburb,
         },
         {
           headers: {
@@ -120,35 +135,91 @@ export default function UpdateProfileModel(props) {
       </Modal.Header>
       <Form onSubmit={submitHandler}>
         <Modal.Body>
-          <Container
-            className="small-container"
-            style={{ backgroundColor: "#f4f6f9" }}
-          >
-            <Form.Group className="mb-3" controlId="firstname">
-              <Form.Label>Full Name</Form.Label>
+          <Container className="small-container">
+            <Form.Group className="mb-3" controlId="name">
+              <Form.Label>Name</Form.Label>
               <Form.Control
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                type="text"
                 required
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="lastname">
+
+            <Form.Group className="mb-3" controlId="email">
               <Form.Label>Email</Form.Label>
               <Form.Control
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                type="email"
                 required
               />
             </Form.Group>
+
+            <Form.Group className="mb-3" controlId="age">
+              <Form.Label>Age</Form.Label>
+              <Form.Control
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                required
+                type="number"
+              />
+            </Form.Group>
+
             <Form.Group className="mb-3" controlId="mobile_no">
               <Form.Label>Mobile No.</Form.Label>
               <Form.Control
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
                 required
+                type="number"
               />
             </Form.Group>
-
+            <Form.Group className="mb-3" controlId="address">
+              <Form.Label>City</Form.Label>
+              <Form.Control
+                type="text"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="address">
+              <Form.Label>State</Form.Label>
+              <Form.Control
+                type="text"
+                value={states}
+                onChange={(e) => setState(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="address">
+              <Form.Label>Shuburb</Form.Label>
+              <Form.Control
+                type="text"
+                value={shuburb}
+                onChange={(e) => setShuburb(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="address">
+              <Form.Label>Pincode</Form.Label>
+              <Form.Control
+                value={postal_code}
+                type="number"
+                onChange={(e) => setPostal_code(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="address">
+              <Form.Label>Address</Form.Label>
+              <Form.Control
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                required
+                as="textarea"
+              />
+            </Form.Group>
             <ToastContainer />
           </Container>
         </Modal.Body>

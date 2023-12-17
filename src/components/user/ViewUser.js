@@ -1,10 +1,13 @@
 import React, { useEffect, useReducer, useContext, useState } from "react";
 import { Store } from "../../Store";
 import { getError } from "../../utils/error";
-import { viewUserReducer as reducer } from "../../reducers/user";
+import {
+  viewUserReducer as reducer,
+  unlockUserReducer,
+} from "../../reducers/user";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { Card, Col, Container, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
 import MessageBox from "../layout/MessageBox";
 import axiosInstance from "../../utils/axiosUtil";
 import { FaEdit } from "react-icons/fa";
@@ -23,6 +26,14 @@ const ViewUser = () => {
     error: "",
   });
 
+  const [{ loading: unlockLoading }, dispatch1] = useReducer(
+    unlockUserReducer,
+    {
+      loading: false,
+      error: "",
+    }
+  );
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -38,12 +49,41 @@ const ViewUser = () => {
           payload: getError(err),
         });
         toast.error(getError(err), {
-          position: toast.POSITION.BOTTOM_CENTER,
+          position: toast.POSITION.TOP_CENTER,
         });
       }
     };
     fetchData();
   }, [id, token]);
+
+  const unlockAccount = async () => {
+    if (window.confirm("Are you sure you want to unlock this User?") === true) {
+      try {
+        dispatch1({ type: "UNLOCK_REQUEST" });
+        const res = await axiosInstance.put(
+          `/api/admin/unlock-user/${id}`,
+          {},
+          {
+            headers: { Authorization: token },
+          }
+        );
+        dispatch1({
+          type: "UNLOCK_SUCCESS",
+        });
+        toast.success(res.data.message, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
+      } catch (error) {
+        dispatch1({ type: "UNLOCK_FAIL" });
+        toast.error(getError(error), {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
+    }
+  };
 
   const getDateTime = (dt) => {
     const dT = dt.split(".")[0].split("T");
@@ -110,15 +150,15 @@ const ViewUser = () => {
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
-                      <strong>Address</strong>
-                    </p>
-                    <p>{loading ? <Skeleton /> : user?.address}</p>
-                  </Col>
-                  <Col md={4}>
-                    <p className="mb-0">
                       <strong>City</strong>
                     </p>
                     <p>{loading ? <Skeleton /> : user?.city}</p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Shuburb</strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : user?.shuburb}</p>
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
@@ -132,6 +172,67 @@ const ViewUser = () => {
                     </p>
                     <p>{loading ? <Skeleton /> : user?.postal_code}</p>
                   </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Address</strong>
+                    </p>
+                    <p>{loading ? <Skeleton /> : user?.address}</p>
+                  </Col>
+                  {user?.is_locked === true && (
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>Account Status</strong>
+                      </p>
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "10px",
+                          alignItems: "flex-start",
+                        }}
+                      >
+                        <p>
+                          {loading ? (
+                            <Skeleton />
+                          ) : (
+                            <span
+                              style={{
+                                color: "orangered",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              Locked
+                            </span>
+                          )}
+                        </p>
+                        <Button
+                          onClick={unlockAccount}
+                          style={{
+                            display: "flex",
+                            gap: "5px",
+                            alignItems: "center",
+                            fontSize: "13px",
+                            padding: "3px 10px",
+                            borderRadius: "7px",
+                          }}
+                        >
+                          {unlockLoading ? (
+                            <span
+                              style={{
+                                display: "flex",
+                                gap: "5px",
+                                alignItems: "center",
+                              }}
+                            >
+                              Unlocking...
+                              <Spinner animation="border" size="sm" />
+                            </span>
+                          ) : (
+                            "Unlock Account"
+                          )}
+                        </Button>
+                      </div>
+                    </Col>
+                  )}
                   <Col md={4}>
                     <p className="mb-0">
                       <strong>Role</strong>

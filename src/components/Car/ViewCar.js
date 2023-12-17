@@ -47,7 +47,7 @@ const ViewCar = () => {
 
   const getDateTime = (dt) => {
     const dT = dt.split(".")[0].split("T");
-    return `${dT[0]} ${dT[1]}`;
+    return `${dT[0]} || ${dT[1]}`;
   };
 
   return (
@@ -119,7 +119,7 @@ const ViewCar = () => {
                     <p>
                       {loading ? (
                         <Skeleton />
-                      ) : car?.is_registered == 0 ? (
+                      ) : car?.is_registered === false ? (
                         "False"
                       ) : (
                         "True"
@@ -147,7 +147,7 @@ const ViewCar = () => {
                     <p>
                       {loading ? (
                         <Skeleton />
-                      ) : car?.owner == 0 ? (
+                      ) : car?.owner === false ? (
                         "False"
                       ) : (
                         "True"
@@ -161,7 +161,7 @@ const ViewCar = () => {
                     <p>
                       {loading ? (
                         <Skeleton />
-                      ) : car?.autorized_person == 0 ? (
+                      ) : car?.autorized_person === false ? (
                         "False"
                       ) : (
                         "True"
@@ -223,12 +223,30 @@ const ViewCar = () => {
                     </p>
                     <p>{loading ? <Skeleton /> : car?.num_of_cylinders}</p>
                   </Col>
-                  {car?.car_address && (
+                  {car?.vehicle_type === "Truck" && (
+                    <>
+                      <Col md={4}>
+                        <p className="mb-0">
+                          <strong>Axle Configuration</strong>
+                        </p>
+                        <p>
+                          {loading ? <Skeleton /> : car?.axle_configuration}
+                        </p>
+                      </Col>
+                      <Col md={4}>
+                        <p className="mb-0">
+                          <strong>GVM (in kg)</strong>
+                        </p>
+                        <p>{loading ? <Skeleton /> : car?.gvm}</p>
+                      </Col>
+                    </>
+                  )}
+                  {car?.car_shuburb && (
                     <Col md={4}>
                       <p className="mb-0">
-                        <strong>Car Address</strong>
+                        <strong>Car Shuburb</strong>
                       </p>
-                      <p>{loading ? <Skeleton /> : car?.car_address}</p>
+                      <p>{loading ? <Skeleton /> : car?.car_shuburb}</p>
                     </Col>
                   )}
                   {car?.car_state && (
@@ -255,23 +273,13 @@ const ViewCar = () => {
                       <p>{loading ? <Skeleton /> : car?.car_postal_code}</p>
                     </Col>
                   )}
-                  {car?.vehicle_type === "Truck" && (
-                    <>
-                      <Col md={4}>
-                        <p className="mb-0">
-                          <strong>Axle Configuration</strong>
-                        </p>
-                        <p>
-                          {loading ? <Skeleton /> : car?.axle_configuration}
-                        </p>
-                      </Col>
-                      <Col md={4}>
-                        <p className="mb-0">
-                          <strong>GVM (in kg)</strong>
-                        </p>
-                        <p>{loading ? <Skeleton /> : car?.gvm}</p>
-                      </Col>
-                    </>
+                  {car?.car_address && (
+                    <Col md={4}>
+                      <p className="mb-0">
+                        <strong>Car Address</strong>
+                      </p>
+                      <p>{loading ? <Skeleton /> : car?.car_address}</p>
+                    </Col>
                   )}
                   <Col md={4}>
                     <p className="mb-0">

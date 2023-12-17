@@ -4,8 +4,7 @@ import { getError } from "../../utils/error";
 import { editReducer as reducer } from "../../reducers/commonReducer";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { Modal, Form, Button, Container } from "react-bootstrap";
-import LoadingBox from "../layout/LoadingBox";
+import { Modal, Form, Button, Container, Spinner } from "react-bootstrap";
 import axiosInstance from "../../utils/axiosUtil";
 
 export default function EditUserModel(props) {
@@ -26,6 +25,7 @@ export default function EditUserModel(props) {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [states, setState] = useState("");
+  const [shuburb, setShuburb] = useState("");
   const [postal_code, setPostal_code] = useState();
 
   const resetForm = () => {
@@ -37,6 +37,7 @@ export default function EditUserModel(props) {
     setAddress("");
     setCity("");
     setState("");
+    setShuburb("");
     setPostal_code();
   };
   useEffect(() => {
@@ -58,6 +59,7 @@ export default function EditUserModel(props) {
         setAddress(user.address);
         setCity(user.city);
         setState(user.state);
+        setShuburb(user.shuburb);
         setPostal_code(user.postal_code);
 
         dispatch({ type: "FETCH_SUCCESS" });
@@ -92,6 +94,7 @@ export default function EditUserModel(props) {
           city,
           state: states,
           postal_code,
+          shuburb,
         },
         {
           headers: {
@@ -110,10 +113,6 @@ export default function EditUserModel(props) {
         setTimeout(() => {
           window.location.reload();
         }, 3000);
-      } else {
-        toast.error(data.error.message, {
-          position: toast.POSITION.TOP_CENTER,
-        });
       }
     } catch (err) {
       dispatch({ type: "UPDATE_FAIL" });
@@ -207,6 +206,15 @@ export default function EditUserModel(props) {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="address">
+              <Form.Label>Shuburb</Form.Label>
+              <Form.Control
+                type="text"
+                value={shuburb}
+                onChange={(e) => setShuburb(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="address">
               <Form.Label>Pincode</Form.Label>
               <Form.Control
                 value={postal_code}
@@ -236,9 +244,12 @@ export default function EditUserModel(props) {
             type="submit"
             disabled={loadingUpdate ? true : false}
           >
-            Submit
+            {loadingUpdate ? (
+              <Spinner animation="border" size="sm" />
+            ) : (
+              "Submit"
+            )}
           </Button>
-          {loadingUpdate && <LoadingBox></LoadingBox>}
         </Modal.Footer>
       </Form>
     </Modal>

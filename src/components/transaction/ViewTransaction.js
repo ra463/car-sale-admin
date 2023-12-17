@@ -167,11 +167,11 @@ const ViewTransaction = () => {
                     <p className="mb-0">
                       <strong>ID Of Auction</strong>
                     </p>
-                    <p>
+                    <p style={{ color: "orange" }}>
                       {loading ? (
                         <Skeleton />
                       ) : (
-                        transaction?.order?.auction?._id
+                        `#${transaction?.order?.auction.auction_id}`
                       )}
                     </p>
                   </Col>
@@ -183,7 +183,7 @@ const ViewTransaction = () => {
                       {loading ? (
                         <Skeleton />
                       ) : (
-                        transaction?.order?.auction?.seller?.name
+                        transaction?.order?.auction?.seller.name
                       )}
                     </p>
                   </Col>
@@ -224,7 +224,7 @@ const ViewTransaction = () => {
                   {loading ? (
                     <Skeleton />
                   ) : (
-                    `Auction Car Details for Transaction ID - ${transaction?.transactionId}`
+                    `Auctioned Vehicle Details for Transaction ID - ${transaction?.transactionId}`
                   )}
                 </Card.Title>
               </Card.Header>
@@ -234,11 +234,11 @@ const ViewTransaction = () => {
                     <p className="mb-0">
                       <strong>Car ID</strong>
                     </p>
-                    <p>
+                    <p style={{color:"orange"}}>
                       {loading ? (
                         <Skeleton />
                       ) : (
-                        transaction?.order?.auction?.car?._id
+                        `#${transaction?.order?.auction?.car._id}`
                       )}
                     </p>
                   </Col>
@@ -281,25 +281,61 @@ const ViewTransaction = () => {
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
-                      <strong>Car Transmission Type</strong>
+                      <strong>Car City</strong>
                     </p>
                     <p>
                       {loading ? (
                         <Skeleton />
                       ) : (
-                        transaction?.order?.auction?.car?.transmission_type
+                        transaction?.order?.auction?.car.car_city
                       )}
                     </p>
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
-                      <strong>Car Fuel Type</strong>
+                      <strong>Car State</strong>
                     </p>
                     <p>
                       {loading ? (
                         <Skeleton />
                       ) : (
-                        transaction?.order?.auction?.car?.fuel_type
+                        transaction?.order?.auction?.car.car_state
+                      )}
+                    </p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Car Shuburb</strong>
+                    </p>
+                    <p>
+                      {loading ? (
+                        <Skeleton />
+                      ) : (
+                        transaction?.order?.auction?.car.car_shuburb
+                      )}
+                    </p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Car Postal Code</strong>
+                    </p>
+                    <p>
+                      {loading ? (
+                        <Skeleton />
+                      ) : (
+                        transaction?.order?.auction?.car.car_postal_code
+                      )}
+                    </p>
+                  </Col>
+                  <Col md={4}>
+                    <p className="mb-0">
+                      <strong>Car Address</strong>
+                    </p>
+                    <p>
+                      {loading ? (
+                        <Skeleton />
+                      ) : (
+                        transaction?.order?.auction?.car.car_address
                       )}
                     </p>
                   </Col>
