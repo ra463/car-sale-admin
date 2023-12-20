@@ -188,7 +188,7 @@ export default function Users() {
                 </thead>
                 <tbody>
                   {loading ? (
-                    <CustomSkeleton resultPerPage={resultPerPage} column={8} />
+                    <CustomSkeleton resultPerPage={resultPerPage} column={9} />
                   ) : users && users.length > 0 ? (
                     users.map((user, i) => (
                       <tr key={user?._id} className="odd">
@@ -262,7 +262,7 @@ export default function Users() {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="8" className="text-center">
+                      <td colSpan="9" className="text-center">
                         No User(s) Found
                       </td>
                     </tr>
