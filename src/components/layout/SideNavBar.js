@@ -92,7 +92,7 @@ export default function SideNavbar({ isExpanded }) {
               to="/admin/dashboard"
               className="brand-text ms-2 font-weight-light"
             >
-              ASIS Auction
+              AS IS Auction
             </Link>
           </div>
 

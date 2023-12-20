@@ -115,7 +115,7 @@ const ViewProfile = () => {
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
-                      <strong>Pin Code</strong>
+                      <strong>Postcode</strong>
                     </p>
                     <p>{user.postal_code}</p>
                   </Col>

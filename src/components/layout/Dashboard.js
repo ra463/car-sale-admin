@@ -112,90 +112,73 @@ export default function Dashboard() {
                 {loading ? (
                   <Skeleton count={5} />
                 ) : (
-                  <div className="small-box bg-info">
-                    <div className="inner">
-                      <h3>
-                        {summary.users && summary.users[0]
-                          ? summary.users[0].total
-                          : 0}
-                      </h3>
-                      <p>Total Users</p>
+                  <Link to="/admin/users">
+                    <div className="small-box bg-info">
+                      <div className="inner">
+                        <h3>
+                          {summary.users && summary.users[0]
+                            ? summary.users[0].total
+                            : 0}
+                        </h3>
+                        <p>Total Users</p>
+                      </div>
+                      <div className="icon">
+                        <HiUsers />
+                      </div>
+                      <div className="small-box-footer">
+                        More info {<FaArrowCircleRight />}
+                      </div>
                     </div>
-                    <div className="icon">
-                      <HiUsers />
-                    </div>
-                    <Link to="/admin/users" className="small-box-footer">
-                      More info {<FaArrowCircleRight />}
-                    </Link>
-                  </div>
+                  </Link>
                 )}
               </Col>
               <Col lg={3} sm={6}>
                 {loading ? (
                   <Skeleton count={5} />
                 ) : (
-                  <div className="small-box bg-success">
-                    <div className="inner">
-                      <h3>
-                        {summary.cars && summary.cars[0]
-                          ? summary.cars[0].total
-                          : 0}
-                        <sup style={{ fontSize: 20 }}></sup>
-                      </h3>
-                      <p>Total Vehicle's</p>
+                  <Link to="/admin/vehicles">
+                    <div className="small-box bg-success">
+                      <div className="inner">
+                        <h3>
+                          {summary.cars && summary.cars[0]
+                            ? summary.cars[0].total
+                            : 0}
+                          <sup style={{ fontSize: 20 }}></sup>
+                        </h3>
+                        <p>Total Vehicle's</p>
+                      </div>
+                      <div className="icon">
+                        <FaCarSide />
+                      </div>
+                      <div className="small-box-footer">
+                        More info {<FaArrowCircleRight />}
+                      </div>
                     </div>
-                    <div className="icon">
-                      <FaCarSide />
-                    </div>
-                    <Link to="/admin/vehicles" className="small-box-footer">
-                      More info {<FaArrowCircleRight />}
-                    </Link>
-                  </div>
+                  </Link>
                 )}
               </Col>
               <Col lg={3} sm={6}>
                 {loading ? (
                   <Skeleton count={5} />
                 ) : (
-                  <div className="small-box bg-warning">
-                    <div className="inner">
-                      <h3>
-                        {summary.auctions && summary.auctions[0]
-                          ? summary.auctions[0].total
-                          : 0}
-                      </h3>
-                      <p>Total Auction's Registered</p>
+                  <Link to="/admin/auctions">
+                    <div className="small-box bg-warning">
+                      <div className="inner">
+                        <h3>
+                          {summary.auctions && summary.auctions[0]
+                            ? summary.auctions[0].total
+                            : 0}
+                        </h3>
+                        <p>Total Auction's Registered</p>
+                      </div>
+                      <div className="icon">
+                        <FaChessKing />
+                      </div>
+                      <div className="small-box-footer">
+                        More info {<FaArrowCircleRight />}
+                      </div>
                     </div>
-                    <div className="icon">
-                      <FaChessKing />
-                    </div>
-                    <Link to="/admin/auctions" className="small-box-footer">
-                      More info {<FaArrowCircleRight />}
-                    </Link>
-                  </div>
-                )}
-              </Col>
-
-              <Col lg={3} sm={6}>
-                {loading ? (
-                  <Skeleton count={5} />
-                ) : (
-                  <div className="small-box bg-danger">
-                    <div className="inner">
-                      <h3>
-                        {summary.bids && summary.bids[0]
-                          ? summary.bids[0].total
-                          : 0}
-                      </h3>
-                      <p>Total Bids</p>
-                    </div>
-                    <div className="icon">
-                      <MdMoney />
-                    </div>
-                    <Link to="/admin/bids" className="small-box-footer">
-                      More info {<FaArrowCircleRight />}
-                    </Link>
-                  </div>
+                  </Link>
                 )}
               </Col>
 
@@ -203,22 +186,24 @@ export default function Dashboard() {
                 {loading ? (
                   <Skeleton count={5} />
                 ) : (
-                  <div className="small-box bg-secondary">
-                    <div className="inner">
-                      <h3>
-                        {summary.transactions && summary.transactions[0]
-                          ? summary.transactions[0].total
-                          : 0}
-                      </h3>
-                      <p>Total Transactions</p>
+                  <Link to="/admin/bids">
+                    <div className="small-box bg-danger">
+                      <div className="inner">
+                        <h3>
+                          {summary.bids && summary.bids[0]
+                            ? summary.bids[0].total
+                            : 0}
+                        </h3>
+                        <p>Total Bids</p>
+                      </div>
+                      <div className="icon">
+                        <MdMoney />
+                      </div>
+                      <div className="small-box-footer">
+                        More info {<FaArrowCircleRight />}
+                      </div>
                     </div>
-                    <div className="icon">
-                      <MdMoney />
-                    </div>
-                    <Link to="/admin/transactions" className="small-box-footer">
-                      More info {<FaArrowCircleRight />}
-                    </Link>
-                  </div>
+                  </Link>
                 )}
               </Col>
 
@@ -226,22 +211,49 @@ export default function Dashboard() {
                 {loading ? (
                   <Skeleton count={5} />
                 ) : (
-                  <div className="small-box bg-primary">
-                    <div className="inner">
-                      <h3>
-                        {summary.queries && summary.queries[0]
-                          ? summary.queries[0].total
-                          : 0}
-                      </h3>
-                      <p>Total Queries Submitted</p>
+                  <Link to="/admin/transactions">
+                    <div className="small-box bg-secondary">
+                      <div className="inner">
+                        <h3>
+                          {summary.transactions && summary.transactions[0]
+                            ? summary.transactions[0].total
+                            : 0}
+                        </h3>
+                        <p>Total Transactions</p>
+                      </div>
+                      <div className="icon">
+                        <MdMoney />
+                      </div>
+                      <div className="small-box-footer">
+                        More info {<FaArrowCircleRight />}
+                      </div>
                     </div>
-                    <div className="icon">
-                      <MdQuestionAnswer />
+                  </Link>
+                )}
+              </Col>
+
+              <Col lg={3} sm={6}>
+                {loading ? (
+                  <Skeleton count={5} />
+                ) : (
+                  <Link to="/admin/queries">
+                    <div className="small-box bg-primary">
+                      <div className="inner">
+                        <h3>
+                          {summary.queries && summary.queries[0]
+                            ? summary.queries[0].total
+                            : 0}
+                        </h3>
+                        <p>Total Queries Submitted</p>
+                      </div>
+                      <div className="icon">
+                        <MdQuestionAnswer />
+                      </div>
+                      <div className="small-box-footer">
+                        More info {<FaArrowCircleRight />}
+                      </div>
                     </div>
-                    <Link to="/admin/queries" className="small-box-footer">
-                      More info {<FaArrowCircleRight />}
-                    </Link>
-                  </div>
+                  </Link>
                 )}
               </Col>
 
@@ -261,9 +273,7 @@ export default function Dashboard() {
                     <div className="icon">
                       <FaMoneyCheckAlt />
                     </div>
-                    <div className="small-box-footer">
-                      Total Amount
-                    </div>
+                    <div className="small-box-footer">Total Amount</div>
                   </div>
                 )}
               </Col>

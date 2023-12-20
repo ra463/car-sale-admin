@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import { Store } from "../../Store";
-import { auctionReducer } from "../../reducers/auction";
+import { auctionReducer, auctionState } from "../../reducers/auction";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
@@ -29,6 +29,7 @@ export default function Auction() {
   const [searchInput, setSearchInput] = useState("");
   const [query, setQuery] = useState("");
   const [del, setDel] = useState(false);
+  const [states, setStates] = useState("all");
 
   const curPageHandler = (p) => setCurPage(p);
 
@@ -37,6 +38,11 @@ export default function Auction() {
       loading: true,
       error: "",
     });
+
+  const [{ carStates }, dispatch1] = useReducer(auctionState, {
+    loading: true,
+    error: "",
+  });
 
   const deleteUser = async (id) => {
     if (
@@ -66,13 +72,15 @@ export default function Auction() {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const res = await axiosInstance.get(
-          `/api/admin/getalauctions/?status=${status}&keyword=${query}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
+          `/api/admin/getalauctions/?status=${status}&keyword=${query}&car_state=${states}&resultPerPage=${resultPerPage}&currentPage=${curPage}`,
           {
             headers: { Authorization: token },
           }
         );
-
+        // console.log the url to see if it is correct
+        console.log(res.config.url);
         dispatch({ type: "FETCH_SUCCESS", payload: res.data });
+        console.log(res.data);
       } catch (error) {
         dispatch({
           type: "FETCH_FAIL",
@@ -83,8 +91,26 @@ export default function Auction() {
         });
       }
     };
+    const fetchState = async () => {
+      dispatch1({ type: "STATE_REQUEST" });
+      try {
+        const res = await axiosInstance.get("/api/admin/get-states", {
+          headers: { Authorization: token },
+        });
+        dispatch1({ type: "STATE_SUCCESS", payload: res.data });
+      } catch (error) {
+        dispatch1({
+          type: "STATE_FAIL",
+          payload: error.response.data.message,
+        });
+        toast.error(error.response.data.message, {
+          position: toast.POSITION.BOTTOM_CENTER,
+        });
+      }
+    };
     fetchData();
-  }, [token, del, curPage, status, resultPerPage, query]);
+    fetchState();
+  }, [token, del, curPage, status, resultPerPage, query, states]);
 
   const numOfPages = Math.ceil(filteredAuctionCount / resultPerPage);
   const skip = resultPerPage * (curPage - 1);
@@ -147,6 +173,38 @@ export default function Auction() {
                       <option value="closed">Closed</option>
                       <option value="refunded">Refunded</option>
                       <option value="sold">Sold</option>
+                    </Form.Select>
+                  </Form.Group>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <p className="p-bold m-0 me-3 filter-title">
+                    Filter by Car State
+                  </p>
+                  <Form.Group controlId="status">
+                    <Form.Select
+                      value={states}
+                      onChange={(e) => {
+                        setStates(e.target.value);
+                        setCurPage(1);
+                      }}
+                      aria-label="Default select example"
+                    >
+                      <option value="all">All</option>
+                      {carStates && carStates.length > 0
+                        ? carStates.map((s) => (
+                            <option
+                              key={Math.random().toString(36).substring(7)}
+                              value={s}
+                            >
+                              {s}
+                            </option>
+                          ))
+                        : "No State Found"}
                     </Form.Select>
                   </Form.Group>
                 </div>

@@ -120,7 +120,7 @@ export default function Bid() {
                 <InputGroup>
                   <Form.Control
                     aria-label="Search Input"
-                    placeholder="Search"
+                    placeholder="Search By Bid Amount"
                     type="search"
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}

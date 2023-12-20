@@ -420,7 +420,7 @@ const ViewAuction = () => {
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
-                      <strong>Auctioneer Postal Code</strong>
+                      <strong>Auctioneer Postcode</strong>
                     </p>
                     <p>
                       {loading ? <Skeleton /> : auction?.seller.postal_code}
@@ -516,7 +516,7 @@ const ViewAuction = () => {
                     </Col>
                     <Col md={4}>
                       <p className="mb-0">
-                        <strong>User - Postal Code</strong>
+                        <strong>User - Postcode</strong>
                       </p>
                       <p>{loading ? <Skeleton /> : winner?.postal_code}</p>
                     </Col>

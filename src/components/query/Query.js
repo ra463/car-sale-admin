@@ -118,7 +118,7 @@ export default function Query() {
                 <InputGroup>
                   <Form.Control
                     aria-label="Search Input"
-                    placeholder="Search"
+                    placeholder="Search By Submitted By"
                     type="search"
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}

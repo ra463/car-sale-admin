@@ -203,7 +203,7 @@ export default function UpdateProfileModel(props) {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="address">
-              <Form.Label>Pincode</Form.Label>
+              <Form.Label>Postcode</Form.Label>
               <Form.Control
                 value={postal_code}
                 type="number"

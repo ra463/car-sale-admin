@@ -51,4 +51,17 @@ const refundReducer = (state, action) => {
   }
 };
 
-export { auctionReducer, viewAuctionReducer, refundReducer };
+const auctionState = (state, action) => {
+  switch (action.type) {
+    case "STATE_REQUEST":
+      return { ...state, loading: true };
+    case "STATE_SUCCESS":
+      return { ...state, loading: false, carStates: action.payload.carStates };
+    case "STATE_FAIL":
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export { auctionReducer, viewAuctionReducer, refundReducer, auctionState };

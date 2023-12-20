@@ -293,7 +293,7 @@ const ViewCar = () => {
                   {car?.car_postal_code && (
                     <Col md={4}>
                       <p className="mb-0">
-                        <strong>Car Pincode</strong>
+                        <strong>Car Postcode</strong>
                       </p>
                       <p>{loading ? <Skeleton /> : car?.car_postal_code}</p>
                     </Col>

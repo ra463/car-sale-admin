@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import { Store } from "../../Store";
-import { userReducer } from "../../reducers/user";
+import { unlockUserReducer, userReducer } from "../../reducers/user";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import MessageBox from "../layout/MessageBox";
@@ -10,6 +10,7 @@ import {
   Container,
   Form,
   InputGroup,
+  Spinner,
   Table,
 } from "react-bootstrap";
 import CustomPagination from "../layout/CustomPagination";
@@ -17,6 +18,7 @@ import axiosInstance from "../../utils/axiosUtil";
 import { FaEye, FaSearch, FaTrashAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
 import CustomSkeleton from "../layout/CustomSkeleton";
+import { getError } from "../../utils/error";
 
 export default function Users() {
   const navigate = useNavigate();
@@ -39,6 +41,43 @@ export default function Users() {
     }
   );
 
+  const [{ loading: unlockLoading }, dispatch1] = useReducer(
+    unlockUserReducer,
+    {
+      loading: false,
+      error: "",
+    }
+  );
+
+  const unlockAccount = async (id) => {
+    if (window.confirm("Are you sure you want to unlock this User?") === true) {
+      try {
+        dispatch1({ type: "UNLOCK_REQUEST" });
+        const res = await axiosInstance.put(
+          `/api/admin/unlock-user/${id}`,
+          {},
+          {
+            headers: { Authorization: token },
+          }
+        );
+        dispatch1({
+          type: "UNLOCK_SUCCESS",
+        });
+        toast.success(res.data.message, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
+      } catch (error) {
+        dispatch1({ type: "UNLOCK_FAIL" });
+        toast.error(getError(error), {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
+    }
+  };
+
   const deleteUser = async (id) => {
     if (
       window.confirm(
@@ -52,11 +91,11 @@ export default function Users() {
         });
         setDel(false);
         toast.success("User Deleted Successfully", {
-          position: toast.POSITION.BOTTOM_CENTER,
+          position: toast.POSITION.TOP_CENTER,
         });
       } catch (error) {
         toast.error(error.response, {
-          position: toast.POSITION.BOTTOM_CENTER,
+          position: toast.POSITION.TOP_CENTER,
         });
       }
     }
@@ -79,7 +118,7 @@ export default function Users() {
           payload: error.response.data.message,
         });
         toast.error(error.response.data.message, {
-          position: toast.POSITION.BOTTOM_CENTER,
+          position: toast.POSITION.TOP_CENTER,
         });
       }
     };
@@ -143,6 +182,7 @@ export default function Users() {
                     <th>Age</th>
                     <th>Mobile No.</th>
                     <th>Role</th>
+                    <th>Locked</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -167,6 +207,35 @@ export default function Users() {
                             <span className="badge bg-primary">
                               {user?.role}
                             </span>
+                          )}
+                        </td>
+                        <td>
+                          {user?.is_locked === true ? (
+                            <Button
+                              onClick={() => unlockAccount(user._id)}
+                              className="badge bg-warning"
+                              style={{
+                                cursor: "pointer",
+                                padding: "7px",
+                              }}
+                            >
+                              {unlockLoading ? (
+                                <span
+                                  style={{
+                                    display: "flex",
+                                    gap: "5px",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  Unlocking...
+                                  <Spinner animation="border" size="sm" />
+                                </span>
+                              ) : (
+                                "Unlock"
+                              )}
+                            </Button>
+                          ) : (
+                            <span className="badge bg-secondary">No</span>
                           )}
                         </td>
                         <td>
