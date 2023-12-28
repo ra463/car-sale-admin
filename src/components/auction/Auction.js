@@ -77,10 +77,8 @@ export default function Auction() {
             headers: { Authorization: token },
           }
         );
-        // console.log the url to see if it is correct
-        console.log(res.config.url);
+
         dispatch({ type: "FETCH_SUCCESS", payload: res.data });
-        console.log(res.data);
       } catch (error) {
         dispatch({
           type: "FETCH_FAIL",
