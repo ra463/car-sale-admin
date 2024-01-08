@@ -11,6 +11,7 @@ import { FaEdit } from "react-icons/fa";
 import Skeleton from "react-loading-skeleton";
 import { motion } from "framer-motion";
 import EditCarModel from "./EditCar";
+import { MdOutlineInfo } from "react-icons/md";
 
 const ViewCar = () => {
   const { state } = useContext(Store);
@@ -18,6 +19,7 @@ const ViewCar = () => {
   const { id } = useParams();
 
   const [modalShow, setModalShow] = useState(false);
+  const [show, setShow] = useState(false);
   const [{ loading, error, car }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
@@ -32,6 +34,7 @@ const ViewCar = () => {
           headers: { Authorization: token },
         });
         dispatch({ type: "FETCH_SUCCESS", payload: data });
+        console.log(data);
       } catch (err) {
         dispatch({
           type: "FETCH_FAIL",
@@ -284,8 +287,25 @@ const ViewCar = () => {
                   )}
                   {car?.car_city && (
                     <Col md={4}>
-                      <p className="mb-0">
-                        <strong>Car City</strong>
+                      <p className="mb-0 show_hide_main">
+                        <strong>Car City</strong>{" "}
+                        {car?.car_city !== car?.seller?.city && (
+                          <MdOutlineInfo
+                            onMouseEnter={() => setShow(true)}
+                            onMouseLeave={() => setShow(false)}
+                            style={{
+                              cursor: "pointer",
+                              color: "#07bc0c",
+                            }}
+                          />
+                        )}
+                        <span
+                          className={`${
+                            show ? "show_hide_info" : "show_info_hide"
+                          }`}
+                        >
+                          The Car Loaction is not same as the Seller Loaction
+                        </span>
                       </p>
                       <p>{loading ? <Skeleton /> : car?.car_city}</p>
                     </Col>

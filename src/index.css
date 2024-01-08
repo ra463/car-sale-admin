@@ -515,3 +515,21 @@ table.table {
   border: 1px solid rgb(213, 213, 213);
   margin-right: 10px;
 }
+
+.show_hide_main {
+  position: relative;
+}
+.show_info_hide {
+  display: none;
+}
+.show_hide_info {
+  position: absolute;
+  font-size: 12px;
+  top: -15px;
+  background-color: #86909950;
+  padding:2px 5px;
+  margin-left: 3px;
+  font-weight: 600;
+  color: #17a2b8;
+  border-radius: 3px;
+}
