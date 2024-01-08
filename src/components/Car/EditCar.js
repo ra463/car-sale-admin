@@ -220,8 +220,8 @@ export default function EditCarModel(props) {
                 onChange={(e) => setIs_registered(e.target.value)}
                 aria-label="Default select example"
               >
-                <option value="true">True</option>
-                <option value="false">False</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
               </Form.Select>
             </Form.Group>
 
@@ -246,8 +246,8 @@ export default function EditCarModel(props) {
                 onChange={(e) => setOwner(e.target.value)}
                 aria-label="Default select example"
               >
-                <option value="true">True</option>
-                <option value="false">False</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
               </Form.Select>
             </Form.Group>
 
@@ -258,8 +258,8 @@ export default function EditCarModel(props) {
                 onChange={(e) => setAutorized_person(e.target.value)}
                 aria-label="Default select example"
               >
-                <option value="true">True</option>
-                <option value="false">False</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
               </Form.Select>
             </Form.Group>
 

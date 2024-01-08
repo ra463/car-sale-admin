@@ -120,9 +120,9 @@ const ViewCar = () => {
                       {loading ? (
                         <Skeleton />
                       ) : car?.is_registered === false ? (
-                        "False"
+                        "No"
                       ) : (
-                        "True"
+                        "Yes"
                       )}
                     </p>
                   </Col>
@@ -150,9 +150,9 @@ const ViewCar = () => {
                       {loading ? (
                         <Skeleton />
                       ) : car?.owner === false ? (
-                        "False"
+                        "No"
                       ) : (
-                        "True"
+                        "Yes"
                       )}
                     </p>
                   </Col>
@@ -164,9 +164,9 @@ const ViewCar = () => {
                       {loading ? (
                         <Skeleton />
                       ) : car?.autorized_person === false ? (
-                        "False"
+                        "No"
                       ) : (
-                        "True"
+                        "Yes"
                       )}
                     </p>
                   </Col>
