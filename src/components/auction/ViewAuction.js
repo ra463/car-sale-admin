@@ -242,7 +242,7 @@ const ViewAuction = () => {
                       </Col>
                       <Col md={4}>
                         <p className="mb-0">
-                          <strong>Is Winner Paid 10% Amount?</strong>
+                          <strong>Is Winner Paid $100 Amount?</strong>
                         </p>
                         <div
                           style={{
