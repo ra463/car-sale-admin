@@ -282,7 +282,7 @@ const ViewUser = () => {
                     ) : (
                       <img
                         className="profile_pic"
-                        src={`${user?.profilePicUrl}`}
+                        src={`${user?.avatar}`}
                         alt="img"
                       />
                     )}
