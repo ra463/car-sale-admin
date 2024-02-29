@@ -17,10 +17,12 @@ export default function EditUserModel(props) {
     error: "",
   });
 
-  const [name, setName] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [middlename, setMiddlename] = useState("");
   const [email, setEmail] = useState("");
   const [age, setAge] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phone, setPhone] = useState("");
   const [role, setRole] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -29,10 +31,12 @@ export default function EditUserModel(props) {
   const [postal_code, setPostal_code] = useState();
 
   const resetForm = () => {
-    setName("");
+    setFirstname("");
+    setLastname("");
+    setMiddlename("");
     setEmail("");
     setAge("");
-    setPhoneNumber("");
+    setPhone("");
     setRole("");
     setAddress("");
     setCity("");
@@ -51,10 +55,12 @@ export default function EditUserModel(props) {
 
         const user = data.user;
 
-        setName(user.name);
+        setFirstname(user.firstname);
+        setLastname(user.lastname);
+        user.middlename && setMiddlename(user.middlename);
         setEmail(user.email);
         setAge(user.age);
-        setPhoneNumber(user.phoneNumber);
+        setPhone(user.phone);
         setRole(user.role);
         setAddress(user.address);
         setCity(user.city);
@@ -85,11 +91,13 @@ export default function EditUserModel(props) {
       const { data } = await axiosInstance.put(
         `/api/admin/updateuser/${id}`,
         {
-          name,
+          firstname,
+          middlename,
+          lastname,
           email,
           role,
           age,
-          phoneNumber,
+          phone,
           address,
           city,
           state: states,
@@ -136,10 +144,30 @@ export default function EditUserModel(props) {
         <Modal.Body>
           <Container className="small-container">
             <Form.Group className="mb-3" controlId="name">
-              <Form.Label>Name</Form.Label>
+              <Form.Label>Fisrtname</Form.Label>
               <Form.Control
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={firstname}
+                onChange={(e) => setFirstname(e.target.value)}
+                type="text"
+                required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="name">
+              <Form.Label>Middlename</Form.Label>
+              <Form.Control
+                value={middlename}
+                onChange={(e) => setMiddlename(e.target.value)}
+                type="text"
+                required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="name">
+              <Form.Label>Lastname</Form.Label>
+              <Form.Control
+                value={lastname}
+                onChange={(e) => setLastname(e.target.value)}
                 type="text"
                 required
               />
@@ -168,8 +196,8 @@ export default function EditUserModel(props) {
             <Form.Group className="mb-3" controlId="mobile_no">
               <Form.Label>Mobile No.</Form.Label>
               <Form.Control
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 required
                 type="number"
               />

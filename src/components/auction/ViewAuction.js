@@ -378,7 +378,19 @@ const ViewAuction = () => {
                     <p className="mb-0">
                       <strong>Auctioneer Name</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : auction?.seller.name}</p>
+                    <p>
+                      {loading ? (
+                        <Skeleton />
+                      ) : (
+                        auction?.seller.firstname +
+                        " " +
+                        (auction?.seller.middlename
+                          ? auction?.seller.middlename +
+                            " " +
+                            auction?.seller.lastname
+                          : auction?.seller.lastname)
+                      )}
+                    </p>
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">

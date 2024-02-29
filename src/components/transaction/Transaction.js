@@ -189,7 +189,12 @@ export default function Transaction() {
                               </span>
                             )}
                           </td>
-                          <td>{transaction?.user?.name}</td>
+                          <td>
+                            {transaction?.user?.firstname}{" "}
+                            {transaction?.user?.middlename
+                              ? `${transaction?.user?.middlename} ${transaction?.user?.lastname}`
+                              : transaction?.user?.lastname}
+                          </td>
                           <td>
                             {getDateTime(
                               transaction?.createdAt && transaction?.createdAt

@@ -81,7 +81,19 @@ const ViewTransaction = () => {
                     <p className="mb-0">
                       <strong>Transaction Done By</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : transaction?.user?.name}</p>
+                    <p>
+                      {loading ? (
+                        <Skeleton />
+                      ) : (
+                        transaction?.user.firstname +
+                        " " +
+                        (transaction?.user.middlename
+                          ? transaction?.user.middlename +
+                            " " +
+                            transaction?.user.middlename
+                          : transaction?.user.middlename)
+                      )}
+                    </p>
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
@@ -113,19 +125,6 @@ const ViewTransaction = () => {
                       ) : (
                         transaction?.createdAt &&
                         getDateTime(transaction?.createdAt)
-                      )}
-                    </p>
-                  </Col>
-                  <Col md={4}>
-                    <p className="mb-0">
-                      <strong>Last Update</strong>
-                    </p>
-                    <p>
-                      {loading ? (
-                        <Skeleton />
-                      ) : (
-                        transaction?.updatedAt &&
-                        getDateTime(transaction?.updatedAt)
                       )}
                     </p>
                   </Col>
@@ -183,7 +182,14 @@ const ViewTransaction = () => {
                       {loading ? (
                         <Skeleton />
                       ) : (
-                        transaction?.order?.auction?.seller.name
+                        transaction?.order?.auction?.seller.user.firstname +
+                        " " +
+                        (transaction?.order?.auction?.seller.user.middlename
+                          ? transaction?.order?.auction?.seller.user
+                              .middlename +
+                            " " +
+                            transaction?.order?.auction?.seller.user.lastname
+                          : transaction?.order?.auction?.seller.user.lastname)
                       )}
                     </p>
                   </Col>
@@ -196,18 +202,6 @@ const ViewTransaction = () => {
                         <Skeleton />
                       ) : (
                         getDateTime(transaction?.order?.createdAt)
-                      )}
-                    </p>
-                  </Col>
-                  <Col md={4}>
-                    <p className="mb-0">
-                      <strong>Order Last Update</strong>
-                    </p>
-                    <p>
-                      {loading ? (
-                        <Skeleton />
-                      ) : (
-                        getDateTime(transaction?.order?.updatedAt)
                       )}
                     </p>
                   </Col>
@@ -234,7 +228,7 @@ const ViewTransaction = () => {
                     <p className="mb-0">
                       <strong>Car ID</strong>
                     </p>
-                    <p style={{color:"orange"}}>
+                    <p style={{ color: "orange" }}>
                       {loading ? (
                         <Skeleton />
                       ) : (

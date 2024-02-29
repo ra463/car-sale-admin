@@ -51,7 +51,9 @@ export default function Header({ sidebarHandler }) {
                     <Dropdown.Header>
                       Signed in as
                       <br />
-                      <b>{userInfo.name}</b>
+                      <b>
+                        {userInfo.firstname} {userInfo.lastname}
+                      </b>
                     </Dropdown.Header>
 
                     <Dropdown.Divider />

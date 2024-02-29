@@ -158,7 +158,12 @@ export default function Bid() {
                         <td className="text-center">{skip + i + 1}</td>
                         <td>
                           <Link to={`/admin/view/user/${bid?.bidder._id}`}>
-                            {bid?.bidder.name}
+                            {bid?.bidder.firstname}{" "}
+                            {bid?.bidder.middlename
+                              ? bid?.bidder.middlename +
+                                " " +
+                                bid?.bidder.lastname
+                              : bid?.bidder.lastname}
                           </Link>
                         </td>
                         <td>

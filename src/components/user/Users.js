@@ -194,10 +194,15 @@ export default function Users() {
                       <tr key={user?._id} className="odd">
                         <td className="text-center">{skip + i + 1}</td>
                         <td style={{ color: "orange" }}>#{user?.clientId}</td>
-                        <td>{user?.name}</td>
+                        <td>
+                          {user?.firstname}{" "}
+                          {user?.middlename
+                            ? `${user?.middlename} ${user?.lastname}`
+                            : user?.lastname}
+                        </td>
                         <td>{user?.email}</td>
                         <td>{user?.age}</td>
-                        <td>{user?.phoneNumber}</td>
+                        <td>{user?.phone}</td>
                         <td>
                           {user?.role === "user" ? (
                             <span className="badge bg-success">

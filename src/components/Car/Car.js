@@ -93,7 +93,7 @@ export default function Cars() {
 
   const getDateTime = (dt) => {
     const dT = dt.split(".")[0].split("T");
-    return `${dT[0]} ${dT[1]}`;
+    return `${dT[0]} || ${dT[1]}`;
   };
 
   return (

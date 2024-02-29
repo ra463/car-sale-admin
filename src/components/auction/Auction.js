@@ -256,7 +256,14 @@ export default function Auction() {
                         <td style={{ color: "orange" }}>
                           #{auction?.auction_id}
                         </td>
-                        <td>{auction?.seller?.name}</td>
+                        <td>
+                          {auction?.seller?.firstname}{" "}
+                          {auction?.seller?.middlename
+                            ? auction?.seller?.middlename +
+                              " " +
+                              auction?.seller?.lastname
+                            : auction?.seller?.lastname}
+                        </td>
                         <td>{getDateTime(auction?.auction_start)}</td>
                         <td>{getDateTime(auction?.auction_end)}</td>
                         {auction?.highest_bid !== 0 ? (

@@ -101,9 +101,9 @@ export default function SideNavbar({ isExpanded }) {
             <div className="user-panel mt-3 pb-3 mb-3 d-flex">
               <div className="info">
                 <Link to="/view-profile" className="d-block">
-                  {userInfo.profilePicUrl && (
+                  {userInfo.avatar && (
                     <img
-                      src={userInfo.profilePicUrl}
+                      src={userInfo.avatar}
                       alt=""
                       style={{
                         width: "40px",
@@ -114,7 +114,10 @@ export default function SideNavbar({ isExpanded }) {
                     />
                   )}
                   <span className="info-text">
-                    Welcome {userInfo ? `${userInfo.name}` : "Back"}
+                    Welcome{" "}
+                    {userInfo
+                      ? `${userInfo.firstname} ${userInfo.lastname}`
+                      : "Back"}
                   </span>
                 </Link>
               </div>

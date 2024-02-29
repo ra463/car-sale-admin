@@ -105,7 +105,7 @@ const ViewUser = () => {
             <Card>
               <Card.Header>
                 <Card.Title>
-                  {loading ? <Skeleton /> : `${user?.name}`} - Details
+                  {loading ? <Skeleton /> : `${user?.firstname}`} - Details
                 </Card.Title>
                 <div className="card-tools">
                   <FaEdit
@@ -128,7 +128,17 @@ const ViewUser = () => {
                     <p className="mb-0">
                       <strong>Full Name</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : user?.name}</p>
+                    <p>
+                      {loading ? (
+                        <Skeleton />
+                      ) : (
+                        user.firstname +
+                        " " +
+                        (user.middlename
+                          ? user.middlename + " " + user.lastname
+                          : user.lastname)
+                      )}
+                    </p>
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
@@ -146,7 +156,7 @@ const ViewUser = () => {
                     <p className="mb-0">
                       <strong>Mobile No.</strong>
                     </p>
-                    <p>{loading ? <Skeleton /> : user?.phoneNumber}</p>
+                    <p>{loading ? <Skeleton /> : user?.phone}</p>
                   </Col>
                   <Col md={4}>
                     <p className="mb-0">
