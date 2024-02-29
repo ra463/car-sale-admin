@@ -488,7 +488,17 @@ const ViewAuction = () => {
                       <p className="mb-0">
                         <strong>User - Full Name</strong>
                       </p>
-                      <p>{loading ? <Skeleton /> : winner?.name}</p>
+                      <p>
+                        {loading ? (
+                          <Skeleton />
+                        ) : (
+                          winner.firstname +
+                          " " +
+                          (winner.middlename
+                            ? winner.middlename + " " + winner.lastname
+                            : winner.lastname)
+                        )}
+                      </p>
                     </Col>
                     <Col md={4}>
                       <p className="mb-0">
@@ -693,28 +703,6 @@ const ViewAuction = () => {
                     </p>
                     <p>{loading ? <Skeleton /> : auction?.car?.car_address}</p>
                   </Col>
-                  {/* <Col md={12}>
-                    <p className="mb-0">
-                      <strong>Car Image(s)</strong>
-                    </p>
-                    <p>
-                      {loading ? (
-                        <Skeleton />
-                      ) : auction?.car?.images &&
-                        auction?.car?.images.length > 0 ? (
-                        auction?.car?.images.map((image, index) => (
-                          <img
-                            key={index}
-                            src={image}
-                            alt="car"
-                            className="profile_pic"
-                          />
-                        ))
-                      ) : (
-                        "No Image(s)"
-                      )}
-                    </p>
-                  </Col> */}
                 </Row>
               </Card.Body>
             </Card>
@@ -744,7 +732,12 @@ const ViewAuction = () => {
                       {bids.map((bid, i) => (
                         <tr key={bid?._id} className="odd">
                           <td className="text-center">{i + 1}</td>
-                          <td>{bid?.bidder?.name}</td>
+                          <td>
+                            {bid?.bidder?.firstname}{" "}
+                            {bid?.bidder?.middlename
+                              ? `${bid?.bidder?.middlename} ${bid?.bidder?.lastname}`
+                              : bid?.bidder?.lastname}
+                          </td>
                           <td>{bid?.bid_amount}</td>
                           <td>{getDate(bid?.createdAt)}</td>
                           <td>{getTime(bid?.createdAt)}</td>
